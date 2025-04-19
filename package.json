@@ -1,0 +1,31 @@
+{
+  "name": "my-leetcode",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "test": "echo \"No tests yet!\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SamSumiya/my-leetcode.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SamSumiya/my-leetcode/issues"
+  },
+  "homepage": "https://github.com/SamSumiya/my-leetcode#readme",
+  "description": "",
+  "devDependencies": {
+    "eslint": "^9.25.0",
+    "eslint-config-prettier": "^10.1.2",
+    "eslint-plugin-prettier": "^5.2.6",
+    "globals": "^16.0.0",
+    "prettier": "^3.5.3"
+  }
+}
