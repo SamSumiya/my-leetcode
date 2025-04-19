@@ -14,7 +14,6 @@ This project tracks LeetCode solutions with automatic linting and formatting via
 - Prettier (with `.prettierrc`)
 - Auto-format on save via VSCode settings
 
-
 # 🧠 My LeetCode Tracker
 
 A structured repository to organize and track my LeetCode solutions by difficulty.
@@ -38,3 +37,4 @@ A structured repository to organize and track my LeetCode solutions by difficult
 npm install
 npm run format
 npm run lint
+```
