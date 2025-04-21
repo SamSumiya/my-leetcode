@@ -8,7 +8,8 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "test": "echo \"No tests yet!\"",
-    "postinstall": "husky install"
+    "postinstall": "husky install",
+     "log": "ts-node add-log.ts"
   },
   "repository": {
     "type": "git",
@@ -43,6 +44,7 @@
     ]
   },
   "dependencies": {
+    "date-fns": "^4.1.0",
     "prompts": "^2.4.2"
   }
 }
