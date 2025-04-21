@@ -112,10 +112,10 @@ async function main() {
     fs.writeFileSync(
       'logs.md',
       '| Date | Title | Difficulty | Status | Approach | Tags | ⭐ |\n' +
-        '|------|-------|------------|--------|----------|------|----|\n'
+      '|------|-------|------------|--------|----------|------|----|\n'
     );
   }
-  fs.appendFileSync('logs.md', logLine + '\n');
+  fs.appendFileSync('logs.md', '\n' + logLine + '\n');
   console.log(`✅ Log entry saved to logs.md`);
 }
 
