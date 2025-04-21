@@ -2,7 +2,7 @@ import fs from 'fs';
 import { format } from 'date-fns';
 import prompts from 'prompts';
 
-import { extractTitleFromUrl } from './src/utils/extractTitleFromUrl';
+import { extractTitleFromUrl } from '../utils/extractTitleFromUrl.ts';
 
 interface LogEntry {
   title?: string;
@@ -86,6 +86,7 @@ async function main() {
       ?.map((tag) => tag.trim())
       .filter(Boolean)
       .join(', ') ?? '';
+
   const starSymbol = response.starred ? '🌟' : '';
   const parsedTitle = extractTitleFromUrl(response.url || '');
   const titleWithLink = response.url ? `${parsedTitle} [🔗](${response.url})` : parsedTitle;
@@ -93,8 +94,8 @@ async function main() {
   function pad(str: string, length: number): string {
     return str.length > length ? str.slice(0, length - 3) + '...' : str.padEnd(length, ' ');
   }
-  const paddedTitle = `${pad(parsedTitle, 40)} [🔗](${response.url})`;
-  const header = `| ${pad('Date', 12)} |   ${paddedTitle} | ${pad('Difficulty', 10)} | ${pad('Status', 9)} | ${pad('Approach', 30)} | ${pad('Tags', 25)} | ${pad('⭐', 3)} |\n`;
+  const paddedTitle = pad(parsedTitle, 40) + `[🔗](${response.url})`;
+  const header = `| ${pad('Date', 12)} |  ${paddedTitle} | ${pad('Difficulty', 10)} | ${pad('Status', 9)} | ${pad('Approach', 30)} | ${pad('Tags', 25)} | ${pad('⭐', 3)} |\n`;
   const separator = `|${'-'.repeat(14)}|${'-'.repeat(45)}|${'-'.repeat(12)}|${'-'.repeat(11)}|${'-'.repeat(32)}|${'-'.repeat(27)}|${'-'.repeat(5)}|\n`;
 
   if (!fs.existsSync('logs.md')) {
