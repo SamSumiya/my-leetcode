@@ -7,9 +7,10 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
-    "test": "echo \"No tests yet!\"",
     "postinstall": "husky install",
-     "log": "ts-node add-log.ts"
+    "log": "ts-node add-log.ts",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,8 @@
   "homepage": "https://github.com/SamSumiya/my-leetcode#readme",
   "description": "",
   "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "@types/mocha": "^10.0.10",
     "@types/node": "^22.14.1",
     "@types/prompts": "^2.4.9",
     "eslint": "^9.25.0",
@@ -31,8 +34,10 @@
     "eslint-plugin-prettier": "^5.2.6",
     "globals": "^16.0.0",
     "husky": "^9.1.7",
+    "jest": "^29.7.0",
     "lint-staged": "^15.5.1",
     "prettier": "^3.5.3",
+    "ts-jest": "^29.3.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.30.1"
