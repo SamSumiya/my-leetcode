@@ -111,7 +111,8 @@ async function main() {
   if (!fs.existsSync('logs.md')) {
     fs.writeFileSync(
       'logs.md',
-      '| Date | Title | Difficulty | Status | Approach | Tags | ⭐ |------|--------|------------|--------|----------|------|----|'
+      '| Date | Title | Difficulty | Status | Approach | Tags | ⭐ |\n' +
+        '|------|-------|------------|--------|----------|------|----|\n'
     );
   }
   fs.appendFileSync('logs.md', logLine + '\n');
