@@ -3,17 +3,7 @@ import path from 'path';
 import prompts from 'prompts';
 import { extractTitleFromUrl } from '../utils/extractTitleFromUrl';
 
-// Define the shap of a log entry
-interface LogEntry {
-  dateOption: 'today' | 'yesterday';
-  title: string;
-  url: string;
-  difficulty: 'Easy' | 'Medium' | 'Hard';
-  status: '✅ Pass' | '💥 Fail';
-  approach: string;
-  tags: string[];
-  starred: boolean;
-}
+import type { LogEntry } from '../types';
 
 const LOG_PATH = path.resolve(__dirname, '../../leetcode-log.json');
 
