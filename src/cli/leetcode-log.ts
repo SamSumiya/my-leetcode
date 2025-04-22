@@ -1,12 +1,11 @@
 import fs from 'fs';
 import path from 'path';
 import prompts from 'prompts';
-import { format } from 'date-fns';
 import { extractTitleFromUrl } from '../utils/extractTitleFromUrl';
 
 // Define the shap of a log entry
 interface LogEntry {
-  dateOption: 'Today' | 'Yesterday';
+  dateOption: 'today' | 'yesterday';
   title: string;
   url: string;
   difficulty: 'Easy' | 'Medium' | 'Hard';
@@ -22,8 +21,8 @@ async function main() {
   const response = await prompts([
     {
       type: 'text',
-      name: 'title',
-      message: 'Problem Title:',
+      name: 'url',
+      message: 'Leetcode URL:',
     },
     {
       type: 'select',
@@ -33,11 +32,6 @@ async function main() {
         { title: '🗓️ Today', value: 'today' },
         { title: '🕰️ Yesterday', value: 'Yesterday' },
       ],
-    },
-    {
-      type: 'text',
-      name: 'url',
-      message: 'Leetcode URL:',
     },
     {
       type: 'select',
@@ -52,6 +46,7 @@ async function main() {
     {
       type: 'select',
       name: 'status',
+      message: 'How did you do?',
       choices: [
         { title: '✅ Pass', value: '✅ Pass' },
         { title: '💥 Fail', value: '💥 Fail' },
@@ -72,18 +67,32 @@ async function main() {
       type: 'toggle',
       name: 'starred',
       message: 'Starred?',
-      inital: false,
+      initial: false,
       active: 'yes',
       inactive: 'no',
     },
   ]);
 
-  //   const titleFromUrl = extractTitleFromUrl(response.url);
+  const titleFromUrl = extractTitleFromUrl(response.url) || 'Unknown Title';
+
   const entry: LogEntry = {
     ...response,
-    title: extractTitleFromUrl(response.url) || 'Unknow Title',
-    dateOption: 
+    title: titleFromUrl,
+    dateOption: response.dateOption,
   };
+
+  let logs: LogEntry[] = [];
+
+  if (fs.existsSync(LOG_PATH)) {
+    const fileContent = fs.readFileSync(LOG_PATH, 'utf-8');
+    logs = JSON.parse(fileContent) as LogEntry[];
+  }
+
+  logs.push(entry);
+
+  fs.writeFileSync(LOG_PATH, JSON.stringify(logs, null, 2), 'utf-8');
+
+  console.log(`✅ Log for "${titleFromUrl}" saved successfully!`);
 }
 
 main();

@@ -11,5 +11,3 @@ export function todayOrYesterday(dateOption: string): string {
 
   return format(date, 'MM-dd-yyyy');
 }
-
-
