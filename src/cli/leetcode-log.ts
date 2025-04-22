@@ -1,7 +1,10 @@
 import fs from 'fs';
 import path from 'path';
 import prompts from 'prompts';
+
 import { extractTitleFromUrl } from '../utils/extractTitleFromUrl';
+import { buildLogEntry } from '../utils/buildLogEntry';
+import { writeLogToFile } from '../utils/writeLogToFile';
 
 import type { LogEntry } from '../types';
 
@@ -64,23 +67,19 @@ async function main() {
   ]);
 
   const titleFromUrl = extractTitleFromUrl(response.url) || 'Unknown Title';
-
-  const entry: LogEntry = {
-    ...response,
-    title: titleFromUrl,
-    dateOption: response.dateOption,
-  };
+  const entry = buildLogEntry(response);
 
   let logs: LogEntry[] = [];
 
   if (fs.existsSync(LOG_PATH)) {
     const fileContent = fs.readFileSync(LOG_PATH, 'utf-8');
-    logs = JSON.parse(fileContent) as LogEntry[];
+    logs = JSON.parse(fileContent);
   }
 
   logs.push(entry);
 
-  fs.writeFileSync(LOG_PATH, JSON.stringify(logs, null, 2), 'utf-8');
+  await writeLogToFile(LOG_PATH, logs);
+  // fs.writeFileSync(LOG_PATH, JSON.stringify(logs, null, 2), 'utf-8');
 
   console.log(`✅ Log for "${titleFromUrl}" saved successfully!`);
 }
