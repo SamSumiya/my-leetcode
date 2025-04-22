@@ -2,7 +2,7 @@ import fs from 'fs';
 import { format } from 'date-fns';
 import prompts from 'prompts';
 
-import { extractTitleFromUrl } from '../utils/extractTitleFromUrl.ts';
+import { extractTitleFromUrl } from '../utils/extractTitleFromUrl';
 
 interface LogEntry {
   title?: string;
