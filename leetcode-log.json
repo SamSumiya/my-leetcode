@@ -1,41 +1,14 @@
 [
   {
-    "url": "https://leetcode.com/problems/maximum-depth-of-binary-tree/description/?envType=study-plan-v2&envId=leetcode-75",
+    "url": "https://leetcode.com/problems/recyclable-and-low-fat-products/submissions/1614059765/?envType=study-plan-v2&envId=top-sql-50",
     "dateOption": "today",
     "difficulty": "Easy",
     "status": "✅ Pass",
-    "approach": "dfs",
+    "approach": "",
     "tags": [
-      "dfs"
-    ],
-    "starred": true,
-    "title": "Maximum Depth Of Binary Tree"
-  },
-  {
-    "url": "https://leetcode.com/problems/maximum-depth-of-binary-tree/description/?envType=study-plan-v2&envId=leetcode-75",
-    "dateOption": "today",
-    "difficulty": "Easy",
-    "status": "✅ Pass",
-    "approach": "123",
-    "tags": [
-      "a",
-      "b"
-    ],
-    "starred": true,
-    "title": "Maximum Depth Of Binary Tree"
-  },
-  {
-    "url": "https://leetcode.com/problems/find-customer-referee/description/?envType=study-plan-v2&envId=top-sql-50",
-    "dateOption": "today",
-    "difficulty": "Easy",
-    "status": "✅ Pass",
-    "approach": "test",
-    "tags": [
-      "1",
-      "2",
-      "3"
+      ""
     ],
     "starred": false,
-    "title": "Find Customer Referee"
+    "title": "Recyclable And Low Fat Products"
   }
 ]

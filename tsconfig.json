@@ -109,7 +109,7 @@
     /* Completeness */
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
     "skipLibCheck": true,
-    "types": ["jest"]  // ✅ ensures TS recognizes test functions like `it`, `describe`                               /* Skip type checking all .d.ts files. */
+    "types": ["jest", "node"]  // ✅ ensures TS recognizes test functions like `it`, `describe`                               /* Skip type checking all .d.ts files. */
   },
   "include": ["**/*.ts","src", "tests"],
   "exclude": ["node_modules", "dist"]

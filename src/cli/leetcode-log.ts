@@ -4,6 +4,8 @@ import prompts from 'prompts';
 
 import { extractTitleFromUrl } from '../utils/extractTitleFromUrl';
 import { buildLogEntry } from '../utils/buildLogEntry';
+import { fileExists } from '../utils/fileExists';
+import { readLogsFromLeetcode } from '../utils/readLogsFromLeetcode';
 import { writeLogToFile } from '../utils/writeLogToFile';
 
 import type { LogEntry } from '../types';
@@ -71,15 +73,13 @@ async function main() {
 
   let logs: LogEntry[] = [];
 
-  if (fs.existsSync(LOG_PATH)) {
-    const fileContent = fs.readFileSync(LOG_PATH, 'utf-8');
-    logs = JSON.parse(fileContent);
+  if (await fileExists(LOG_PATH)) {
+    await readLogsFromLeetcode(LOG_PATH);
   }
 
   logs.push(entry);
 
   await writeLogToFile(LOG_PATH, logs);
-  // fs.writeFileSync(LOG_PATH, JSON.stringify(logs, null, 2), 'utf-8');
 
   console.log(`✅ Log for "${titleFromUrl}" saved successfully!`);
 }
