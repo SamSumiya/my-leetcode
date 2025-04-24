@@ -1,14 +1,16 @@
 [
+  "",
+  "",
   {
-    "url": "https://leetcode.com/problems/recyclable-and-low-fat-products/submissions/1614059765/?envType=study-plan-v2&envId=top-sql-50",
+    "url": "https://leetcode.com/problems/path-sum-iii/?envType=study-plan-v2&envId=leetcode-75",
     "dateOption": "today",
-    "difficulty": "Easy",
+    "difficulty": "Medium",
     "status": "✅ Pass",
     "approach": "",
     "tags": [
       ""
     ],
     "starred": false,
-    "title": "Recyclable And Low Fat Products"
+    "title": "Path Sum Iii"
   }
-]
+]{"url":"https://leetcode.com/problems/maximum-depth-of-binary-tree/description/?envType=study-plan-v2&envId=leetcode-75","dateOption":"today","difficulty":"Easy","status":"✅ Pass","approach":"","tags":[""],"starred":false,"title":"Maximum Depth Of Binary Tree"}
