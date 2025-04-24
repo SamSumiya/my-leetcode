@@ -1,5 +1,5 @@
-import { todayOrYesterday } from '../src/utils/todayOrYesterday';
-import { freezeDate } from './utils/freezeDate';
+import { todayOrYesterday } from '../../src/utils/todayOrYesterday';
+import { freezeDate } from '.././utils/freezeDate';
 
 describe('todayOrYesterday', () => {
   beforeAll(() => {

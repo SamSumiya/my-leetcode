@@ -1,5 +1,5 @@
-import { buildLogEntry } from '../src/utils/buildLogEntry';
-import type { LogEntryInput } from '../src/types';
+import { buildLogEntry } from '../../src/utils/buildLogEntry';
+import type { LogEntryInput } from '../../src/types';
 
 describe('buildLogEntry', () => {
   const input: LogEntryInput = {
