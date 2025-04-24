@@ -1,6 +1,5 @@
 import { createReadStream } from 'node:fs';
 import readline from 'readline';
-import path from 'node:path';
 import type { LogEntry } from '../types';
 
 import { fileExists } from './fileExists';
@@ -23,6 +22,7 @@ export async function readLogsFromLeetcode(leetcodePath: string): Promise<LogEnt
     try {
       const entry: LogEntry = JSON.parse(line);
       logs.push(entry);
+      // eslint-disable-next-line no-unused-vars
     } catch (err) {
       console.warn(`⚠️ Skipping malformed line: ${line}`);
     }
