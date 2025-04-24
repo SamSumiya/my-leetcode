@@ -1,18 +1,27 @@
-import { writeLogToFile } from '../src/utils/writeLogToFile';
-import { writeFile } from 'fs/promises';
+import { appendLogToJsonlFile } from '../src/utils/appendLogToJsonlFile';
+import { appendFile } from 'fs/promises';
 
 import type { LogEntry } from '../src/types';
 
 jest.mock('fs/promises', () => ({
-  writeFile: jest.fn(),
+  appendFile: jest.fn(),
 }));
 
-describe('writeLogToFile', () => {
-  it('Should call writeFile with inputs path and log object', async () => {
+describe('appendLogToJsonlFile', () => {
+  it('should call appendFile with correct path and log data', async () => {
     const fakePath = '';
-    const fakeData: LogEntry[] = [];
-    await writeLogToFile(fakePath, fakeData);
+    const fakeData: LogEntry = {
+      title: 'Fake Title',
+      url: 'https://leetcode.com/problems/fake',
+      difficulty: 'Easy',
+      status: '✅ Pass',
+      approach: 'Brute force',
+      tags: ['array'],
+      starred: false,
+      dateOption: 'today',
+    };
+    await appendLogToJsonlFile(fakePath, fakeData);
 
-    expect(writeFile).toHaveBeenCalledWith(fakePath, JSON.stringify(fakeData, null, 2), 'utf-8');
+    expect(appendFile).toHaveBeenCalledWith(fakePath, JSON.stringify(fakeData) + '\n', 'utf-8');
   });
 });

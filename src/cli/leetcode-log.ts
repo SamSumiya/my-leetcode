@@ -4,13 +4,13 @@ import prompts from 'prompts';
 
 import { extractTitleFromUrl } from '../utils/extractTitleFromUrl';
 import { buildLogEntry } from '../utils/buildLogEntry';
-import { fileExists } from '../utils/fileExists';
-import { readLogsFromLeetcode } from '../utils/readLogsFromLeetcode';
-import { writeLogToFile } from '../utils/writeLogToFile';
+// import { fileExists } from '../utils/fileExists';
+// import { readLogsFromLeetcode } from '../utils/readLogsFromLeetcode';
+import { appendLogToJsonlFile } from '../utils/appendLogToJsonlFile';
 
-import type { LogEntry } from '../types';
+// import type { LogEntry } from '../types';
 
-const LOG_PATH = path.resolve(__dirname, '../../leetcode-log.json');
+const LOG_PATH = path.resolve(__dirname, '../../leetcode-logs.jsonl');
 
 async function main() {
   const response = await prompts([
@@ -71,15 +71,13 @@ async function main() {
   const titleFromUrl = extractTitleFromUrl(response.url) || 'Unknown Title';
   const entry = buildLogEntry(response);
 
-  let logs: LogEntry[] = [];
+  // let logs: LogEntry;
+  // if (await fileExists(LOG_PATH)) {
+  //   logs = await readLogsFromLeetcode(LOG_PATH);
+  // }
+  // logs.push(entry);
 
-  if (await fileExists(LOG_PATH)) {
-    await readLogsFromLeetcode(LOG_PATH);
-  }
-
-  logs.push(entry);
-
-  await writeLogToFile(LOG_PATH, logs);
+  await appendLogToJsonlFile(LOG_PATH, entry);
 
   console.log(`✅ Log for "${titleFromUrl}" saved successfully!`);
 }

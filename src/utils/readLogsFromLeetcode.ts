@@ -5,7 +5,7 @@ import type { LogEntry } from '../types';
 import { fileExists } from './fileExists';
 
 export async function readLogsFromLeetcode(leetcodePath: string): Promise<LogEntry[]> {
-  if (!fileExists(leetcodePath)) {
+  if (!(await fileExists(leetcodePath))) {
     throw new Error(`❌ File not found: ${leetcodePath}`);
   }
 
