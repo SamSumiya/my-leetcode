@@ -1,5 +1,5 @@
 import { readLogsFromLeetcode } from '../src/utils/readLogsFromLeetcode';
-import { createReadStream } from 'node:fs';
+import { createReadStream, read } from 'node:fs';
 import readline from 'readline';
 
 jest.mock('node:fs', () => ({
@@ -125,5 +125,59 @@ describe('readLogsFromLeetcode', () => {
 
     expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('⚠️ Skipping malformed line:'));
     warnSpy.mockRestore();
+  });
+
+  it('Should parse multiple valid log lines', async () => {
+    const entries = [
+      {
+        title: 'P1',
+        difficulty: 'Easy',
+        status: '✅ Pass',
+        approach: '',
+        tags: [],
+        starred: false,
+        url: '',
+        dateOption: 'today',
+      },
+      {
+        title: 'P2',
+        difficulty: 'Hard',
+        status: '💥 Fail',
+        approach: '',
+        tags: [],
+        starred: false,
+        url: '',
+        dateOption: 'yesterday',
+      },
+    ];
+
+    const parsed = entries.map((entry) => JSON.stringify(entry));
+
+    (createReadStream as jest.Mock).mockReturnValue({});
+    (readline.createInterface as jest.Mock).mockReturnValue(mockAsyncIterator(parsed));
+
+    const logs = await readLogsFromLeetcode('path/fake');
+    expect(logs).toEqual([
+      {
+        title: 'P1',
+        difficulty: 'Easy',
+        status: '✅ Pass',
+        approach: '',
+        tags: [],
+        starred: false,
+        url: '',
+        dateOption: 'today',
+      },
+      {
+        title: 'P2',
+        difficulty: 'Hard',
+        status: '💥 Fail',
+        approach: '',
+        tags: [],
+        starred: false,
+        url: '',
+        dateOption: 'yesterday',
+      },
+    ]);
   });
 });
