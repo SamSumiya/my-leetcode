@@ -4,11 +4,11 @@ import prompts from 'prompts';
 
 import { extractTitleFromUrl } from '../utils/extractTitleFromUrl';
 import { buildLogEntry } from '../utils/buildLogEntry';
-import { fileExists } from '../utils/fileExists';
-import { readLogsFromLeetcode } from '../utils/readLogsFromLeetcode';
-import { writeLogToJsonlFile } from '../utils/writeLogToFile';
+// import { fileExists } from '../utils/fileExists';
+// import { readLogsFromLeetcode } from '../utils/readLogsFromLeetcode';
+import { appendLogToJsonlFile } from '../utils/appendLogToJsonlFile';
 
-import type { LogEntry } from '../types';
+// import type { LogEntry } from '../types';
 
 const LOG_PATH = path.resolve(__dirname, '../../leetcode-logs.jsonl');
 
@@ -77,7 +77,7 @@ async function main() {
   // }
   // logs.push(entry);
 
-  await writeLogToJsonlFile(LOG_PATH, entry);
+  await appendLogToJsonlFile(LOG_PATH, entry);
 
   console.log(`✅ Log for "${titleFromUrl}" saved successfully!`);
 }

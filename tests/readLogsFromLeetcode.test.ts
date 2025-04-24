@@ -1,5 +1,5 @@
 import { readLogsFromLeetcode } from '../src/utils/readLogsFromLeetcode';
-import { createReadStream, read } from 'node:fs';
+import { createReadStream } from 'node:fs';
 import readline from 'readline';
 
 jest.mock('node:fs', () => ({
