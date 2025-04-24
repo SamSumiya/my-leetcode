@@ -2,7 +2,6 @@ import { readLogsFromLeetcode } from '../src/utils/readLogsFromLeetcode';
 import { createReadStream } from 'node:fs';
 import readline from 'readline';
 
-
 jest.mock('node:fs', () => ({
   createReadStream: jest.fn(),
 }));
@@ -63,4 +62,13 @@ describe('readLogsFromLeetcode', () => {
       },
     ]);
   });
+
+  it('Should throw error if the leetcode file does not exist', async () => {
+    const { fileExists } = require('../src/utils/fileExists');
+    fileExists.mockReturnValue(false);
+
+    await expect(readLogsFromLeetcode('fake/path')).rejects.toThrow('❌ File not found: fake/path');
+  });
+
+  
 });
