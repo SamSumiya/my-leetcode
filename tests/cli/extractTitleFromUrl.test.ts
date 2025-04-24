@@ -1,4 +1,4 @@
-import { extractTitleFromUrl } from '../src/utils/extractTitleFromUrl';
+import { extractTitleFromUrl } from '../../src/utils/extractTitleFromUrl';
 
 describe('extractTitleFromUrl', () => {
   it('should convert valid LeetCode URLs to formatted titles', () => {
