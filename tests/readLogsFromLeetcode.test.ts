@@ -1,5 +1,5 @@
 import { readLogsFromLeetcode } from '../src/utils/readLogsFromLeetcode';
-import { createReadStream, read } from 'node:fs';
+import { createReadStream } from 'node:fs';
 import readline from 'readline';
 
 jest.mock('node:fs', () => ({
@@ -32,7 +32,7 @@ function mockAsyncIterator(lines: string[]) {
 }
 
 describe('readLogsFromLeetcode', () => {
-  it('Should read valid logs line and returns parse array', async () => {
+  it('Should read valid logs line and returns parsed array', async () => {
     const validLogLines = JSON.stringify({
       title: 'Test Problem',
       difficulty: 'Easy',
@@ -87,5 +87,43 @@ describe('readLogsFromLeetcode', () => {
 
     const logs = await readLogsFromLeetcode('fake/path');
     expect(logs).toEqual([]);
+  });
+
+  it('Should skip malformed lines', async () => {
+    const badLine = '{this is a bad line}';
+    const validLogLines = JSON.stringify({
+      title: 'Test Problem',
+      difficulty: 'Easy',
+      status: '✅ Pass',
+      approach: 'two-pointer',
+      tags: ['array'],
+      starred: true,
+      url: 'https://leetcode.com/problems/test-problem/',
+      dateOption: 'today',
+    });
+    const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+
+    const input = [badLine, validLogLines];
+
+    (createReadStream as jest.Mock).mockReturnValue({});
+    (readline.createInterface as jest.Mock).mockReturnValue(mockAsyncIterator(input));
+
+    const logs = await readLogsFromLeetcode('fake/path');
+
+    expect(logs).toEqual([
+      {
+        title: 'Test Problem',
+        difficulty: 'Easy',
+        status: '✅ Pass',
+        approach: 'two-pointer',
+        tags: ['array'],
+        starred: true,
+        url: 'https://leetcode.com/problems/test-problem/',
+        dateOption: 'today',
+      },
+    ]);
+
+    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('⚠️ Skipping malformed line:'));
+    warnSpy.mockRestore();
   });
 });
