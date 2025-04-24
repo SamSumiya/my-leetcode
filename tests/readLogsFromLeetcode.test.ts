@@ -1,5 +1,5 @@
 import { readLogsFromLeetcode } from '../src/utils/readLogsFromLeetcode';
-import { createReadStream } from 'node:fs';
+import { createReadStream, read } from 'node:fs';
 import readline from 'readline';
 
 jest.mock('node:fs', () => ({
@@ -70,5 +70,22 @@ describe('readLogsFromLeetcode', () => {
     await expect(readLogsFromLeetcode('fake/path')).rejects.toThrow('❌ File not found: fake/path');
   });
 
-  
+  it('Should throw if createReadStream fails unexpectedly', async () => {
+    const { fileExists } = require('../src/utils/fileExists');
+    fileExists.mockReturnValue(true);
+
+    (createReadStream as jest.Mock).mockImplementation(() => {
+      throw new Error('Stream creation failed');
+    });
+
+    await expect(readLogsFromLeetcode('fake/path')).rejects.toThrow('Stream creation failed');
+  });
+
+  it('Should return an empty array if the file has no lines', async () => {
+    (createReadStream as jest.Mock).mockReturnValue({});
+    (readline.createInterface as jest.Mock).mockReturnValue(mockAsyncIterator([]));
+
+    const logs = await readLogsFromLeetcode('fake/path');
+    expect(logs).toEqual([]);
+  });
 });
