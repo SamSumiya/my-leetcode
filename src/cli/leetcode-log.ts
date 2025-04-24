@@ -1,0 +1,85 @@
+import fs from 'fs';
+import path from 'path';
+import prompts from 'prompts';
+
+import { extractTitleFromUrl } from '../utils/extractTitleFromUrl';
+import { buildLogEntry } from '../utils/buildLogEntry';
+// import { fileExists } from '../utils/fileExists';
+// import { readLogsFromLeetcode } from '../utils/readLogsFromLeetcode';
+import { appendLogToJsonlFile } from '../utils/appendLogToJsonlFile';
+
+// import type { LogEntry } from '../types';
+
+const LOG_PATH = path.resolve(__dirname, '../../leetcode-logs.jsonl');
+
+async function main() {
+  const response = await prompts([
+    {
+      type: 'text',
+      name: 'url',
+      message: 'Leetcode URL:',
+    },
+    {
+      type: 'select',
+      name: 'dateOption',
+      message: 'Enter a date:',
+      choices: [
+        { title: '🗓️ Today', value: 'today' },
+        { title: '🕰️ Yesterday', value: 'Yesterday' },
+      ],
+    },
+    {
+      type: 'select',
+      name: 'difficulty',
+      message: 'difficulty',
+      choices: [
+        { title: 'Easy', value: 'Easy' },
+        { title: 'Medium', value: 'Medium' },
+        { title: 'Hard', value: 'Hard' },
+      ],
+    },
+    {
+      type: 'select',
+      name: 'status',
+      message: 'How did you do?',
+      choices: [
+        { title: '✅ Pass', value: '✅ Pass' },
+        { title: '💥 Fail', value: '💥 Fail' },
+      ],
+    },
+    {
+      type: 'text',
+      name: 'approach',
+      message: 'Approach',
+    },
+    {
+      type: 'list',
+      name: 'tags',
+      message: 'Tags ( comma-seperated) ',
+      separator: ',',
+    },
+    {
+      type: 'toggle',
+      name: 'starred',
+      message: 'Starred?',
+      initial: false,
+      active: 'yes',
+      inactive: 'no',
+    },
+  ]);
+
+  const titleFromUrl = extractTitleFromUrl(response.url) || 'Unknown Title';
+  const entry = buildLogEntry(response);
+
+  // let logs: LogEntry;
+  // if (await fileExists(LOG_PATH)) {
+  //   logs = await readLogsFromLeetcode(LOG_PATH);
+  // }
+  // logs.push(entry);
+
+  await appendLogToJsonlFile(LOG_PATH, entry);
+
+  console.log(`✅ Log for "${titleFromUrl}" saved successfully!`);
+}
+
+main();
