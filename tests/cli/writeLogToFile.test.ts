@@ -1,7 +1,7 @@
-import { appendLogToJsonlFile } from '../src/utils/appendLogToJsonlFile';
+import { appendLogToJsonlFile } from '../../src/utils/appendLogToJsonlFile';
 import { appendFile } from 'fs/promises';
 
-import type { LogEntry } from '../src/types';
+import type { LogEntry } from '../../src/types';
 
 jest.mock('fs/promises', () => ({
   appendFile: jest.fn(),
