@@ -1,7 +1,7 @@
 import { readLogsFromLeetcode } from '../src/utils/readLogsFromLeetcode';
 import { createReadStream } from 'node:fs';
 import readline from 'readline';
-import path = require('node:path');
+
 
 jest.mock('node:fs', () => ({
   createReadStream: jest.fn(),
@@ -11,7 +11,56 @@ jest.mock('readline', () => ({
   createInterface: jest.fn(),
 }));
 
-jest.mock('../src/utils/fileExist', () => ({
+jest.mock('../src/utils/fileExists', () => ({
   fileExists: jest.fn(() => true),
 }));
 
+function mockAsyncIterator(lines: string[]) {
+  return {
+    [Symbol.asyncIterator]: () => {
+      let index = 0;
+      return {
+        next: () => {
+          return Promise.resolve(
+            index < lines.length
+              ? { value: lines[index++], done: false }
+              : { value: undefined, done: true }
+          );
+        },
+      };
+    },
+  };
+}
+
+describe('readLogsFromLeetcode', () => {
+  it('Should read valid logs line and returns parse array', async () => {
+    const validLogLines = JSON.stringify({
+      title: 'Test Problem',
+      difficulty: 'Easy',
+      status: '✅ Pass',
+      approach: 'two-pointer',
+      tags: ['array'],
+      starred: true,
+      url: 'https://leetcode.com/problems/test-problem/',
+      dateOption: 'today',
+    });
+
+    (createReadStream as jest.Mock).mockReturnValue({});
+    (readline.createInterface as jest.Mock).mockReturnValue(mockAsyncIterator([validLogLines]));
+
+    const logs = await readLogsFromLeetcode('fake/path');
+
+    expect(logs).toEqual([
+      {
+        title: 'Test Problem',
+        difficulty: 'Easy',
+        status: '✅ Pass',
+        approach: 'two-pointer',
+        tags: ['array'],
+        starred: true,
+        url: 'https://leetcode.com/problems/test-problem/',
+        dateOption: 'today',
+      },
+    ]);
+  });
+});
