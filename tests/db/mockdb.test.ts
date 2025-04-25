@@ -1,11 +1,17 @@
 import { Pool } from 'pg';
 
 jest.mock('pg', () => {
-  const mockPool = {
-    query: jest.fn().mockReturnValue({
+  const mockClient = {
+    query: jest.fn().mockResolvedValue({
       rows: [{ now: 'fake-date' }],
     }),
-    connect: jest.fn(),
+    release: jest.fn(),
+  };
+  const mockPool = {
+    query: jest.fn().mockResolvedValue({
+      rows: [{ now: 'fake-date' }],
+    }),
+    connect: jest.fn().mockResolvedValue(mockClient),
     end: jest.fn(),
   };
 
