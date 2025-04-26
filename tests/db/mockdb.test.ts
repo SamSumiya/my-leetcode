@@ -1,32 +1,54 @@
-import { Pool } from 'pg';
+import { Pool, PoolClient } from 'pg';
 
 jest.mock('pg', () => {
   const mockClient = {
     query: jest.fn().mockResolvedValue({
-      rows: [{ now: 'fake-date' }],
+      rows: [{ id: 1 }],
     }),
-    release: jest.fn(),
+    release: jest.fn().mockImplementationOnce(() => 'Released!'),
   };
+
   const mockPool = {
-    query: jest.fn().mockResolvedValue({
-      rows: [{ now: 'fake-date' }],
-    }),
     connect: jest.fn().mockResolvedValue(mockClient),
+    query: jest.fn().mockResolvedValue({
+      rows: [{ time: 'fake-time' }],
+    }),
     end: jest.fn(),
   };
 
-  return { Pool: jest.fn(() => mockPool) };
+  return {
+    Pool: jest.fn(() => mockPool),
+  };
 });
 
-describe('Mocked Postgres Connection', () => {
+describe('Postgres Connection', () => {
   let pool: Pool;
+  let client: PoolClient;
 
-  beforeAll(() => {
+  beforeAll(async () => {
     pool = new Pool();
+    client = await pool.connect();
   });
 
-  it('Should return mocked current timestamp', async () => {
-    const result = await pool.query('SELECT NOW()');
-    expect(result.rows[0].now).toBe('fake-date');
+  afterAll(async () => {
+    await pool.end();
+    jest.clearAllMocks();
+  });
+
+  it('Should connect to db', async () => {
+    const message = client.release();
+    expect(message).toBe('Released!');
+    expect(client.release).toHaveBeenCalled();
+  });
+
+  it('Mock client should return 1 from client.query', async () => {
+    const queriedValue = await client.query(`SELECT X FROM Y`);
+    expect(queriedValue.rows[0].id).toBe(1);
+    expect(client.query).toHaveBeenCalled();
+  });
+
+  it('Should end the pool after all', async () => {
+    await pool.end();
+    expect(pool.end).toHaveBeenCalled();
   });
 });
