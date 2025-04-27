@@ -10,9 +10,9 @@ jest.mock('pg', () => {
 
   const mockPool = {
     connect: jest.fn().mockResolvedValue(mockClient),
-    query: jest.fn().mockResolvedValue({
-      rows: [{ time: 'fake-time' }],
-    }),
+    // query: jest.fn().mockResolvedValue({
+    //   rows: [{ time: 'fake-time' }],
+    // }),
     end: jest.fn(),
   };
 
@@ -33,6 +33,12 @@ describe('Postgres Connection', () => {
   afterAll(async () => {
     await pool.end();
     jest.clearAllMocks();
+  });
+
+  it('Should throw a connection error once', async () => {
+    (pool.connect as jest.Mock).mockRejectedValueOnce(new Error('Connection error'));
+    await expect(pool.connect()).rejects.toThrow('Connection error');
+    expect(pool.connect).toHaveBeenCalled();
   });
 
   it('Should connect to db', async () => {
