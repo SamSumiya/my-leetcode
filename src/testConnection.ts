@@ -1,3 +1,4 @@
 import pool from './db';
 
-// console.log(pool)
+const result = await pool.query('SELECT * FROM logs');
+console.log(result.rows);
