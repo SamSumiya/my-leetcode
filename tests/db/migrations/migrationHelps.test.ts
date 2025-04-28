@@ -9,7 +9,7 @@ import { readMigrationFile } from '../../../src/db/migrationHelps';
 // const mockedFs = fs as jest.Mocked<typeof fs>;
 
 jest.mock('fs', () => ({
-  readdirSync: jest.fn().mockReturnValue(['file1', 'file2']),
+  readdirSync: jest.fn().mockReturnValue(['010file', '001file', '002file']),
   readFileSync: jest.fn(),
 }));
 
@@ -22,7 +22,9 @@ describe('Testing migration helper functions', () => {
 
   it('should read the folder and return an array with file titles', () => {
     const files = getFilesFromMigrations('fake/path');
-    expect(files).toEqual(['file1', 'file2']);
+    expect(files).toEqual(['001file', '002file', '010file']);
     expect(fs.readdirSync).toHaveBeenCalledWith('fake/path');
   });
+
+  //   it('Should return absolute path for each migrtio')
 });
