@@ -1,23 +1,24 @@
 import fs from 'fs';
 import path from 'path';
-import pool from './index';
+import pool from '../db';
 
-async function migrate() {
-  const migrationsDir = path.join(__dirname, '../migrations');
-  const files = fs.readdirSync(migrationsDir).sort();
+async function main() {
+  const migrateDirPath = path.join(__dirname, '../migrations');
+  const files = fs.readdirSync(migrateDirPath).sort();
 
-  for (const file of files) {
-    const filePath = path.join(migrationsDir, file);
-    const sql = fs.readFileSync(filePath, 'utf8');
-    console.log(`Running migration: ${file}`);
-    await pool.query(sql);
+  for (let file of files) {
+    const filePath = path.resolve(migrateDirPath, file);
+    const content = fs.readFileSync(filePath, 'utf-8');
+    await pool.query(content);
   }
-
-  console.log('✅ All migrations applied!');
-  await pool.end();
 }
 
-migrate().catch((err) => {
-  console.error('❌ Migration failed:', err);
-  process.exit(1);
-});
+main()
+  .then(() => {
+    console.log('✅ All migrations applied successfully.');
+    process.exit(0);
+  })
+  .catch((err) => {
+    console.error('❌ Encountered an error during migration:', err);
+    process.exit(1);
+  });
