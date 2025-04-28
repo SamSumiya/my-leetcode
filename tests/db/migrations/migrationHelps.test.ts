@@ -14,6 +14,10 @@ jest.mock('fs', () => ({
 }));
 
 describe('Testing migration helper functions', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('should return the correct migrations absolute path', () => {
     const expectedPath = path.join(__dirname, '../../../src/migrations');
     const migrationAbsPath = getMigrationAbsPath();
