@@ -1,14 +1,18 @@
-import fs from 'fs';
-import path from 'path';
 import pool from '../db';
+import {
+  getFilesFromMigrations,
+  getMigrationAbsPath,
+  getMigrationFileAbsPath,
+  readMigrationFile,
+} from './migrationHelps';
 
 async function main() {
-  const migrateDirPath = path.join(__dirname, '../migrations');
-  const files = fs.readdirSync(migrateDirPath).sort();
+  const migrateDirPath = getMigrationAbsPath();
+  const files = getFilesFromMigrations(migrateDirPath);
 
   for (let file of files) {
-    const filePath = path.resolve(migrateDirPath, file);
-    const content = fs.readFileSync(filePath, 'utf-8');
+    const filePath = getMigrationFileAbsPath(migrateDirPath, file);
+    const content = readMigrationFile(filePath);
     await pool.query(content);
   }
 }
