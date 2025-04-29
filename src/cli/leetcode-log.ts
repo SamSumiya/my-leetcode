@@ -11,6 +11,7 @@ import { writeLogToDB } from '../db/writeLogsToDB';
 // import type { LogEntry } from '../types';
 
 // TODO: add a default of user's choice and flexibity of changing it as they wish
+
 const LOG_PATH = path.resolve(__dirname, '../../leetcode-logs.jsonl');
 
 async function main() {
