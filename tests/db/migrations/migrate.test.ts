@@ -1,16 +1,26 @@
 import { runMigrations } from '../../../src/db/migrate';
 import pool from '../../../src/db';
+import fs from 'fs';
 // TODO: refactor these tests cases to accomendate more files in the directory and add // tests/db/migrations/__mocks__/mockMigrations.ts
 
-jest.mock('../../../src/db', () => ({
-  query: jest.fn(),
-  end: jest.fn().mockResolvedValue('Pool Closed!'),
-}));
+jest.mock('../../../src/db', () => {
+  const mockPool = {
+    query: jest.fn(),
+    end: jest.fn().mockResolvedValue('Pool Closed!'),
+  };
+
+  return {
+    __esModule: true,
+    default: mockPool,
+  };
+});
 
 jest.mock('fs', () => ({
   readdirSync: jest.fn(() => ['001_fake_file.sql']),
   readFileSync: jest.fn(() => 'FAKE SQL CONTENT;'),
 }));
+
+const mockFs = fs as jest.Mocked<typeof fs>;
 
 describe('Migration runner ', () => {
   let mockExit: jest.SpyInstance;
@@ -39,6 +49,14 @@ describe('Migration runner ', () => {
 
     const messageFromEnd = await pool.end();
     expect(messageFromEnd).toBe('Pool Closed!');
+  });
+
+  it('should mock read file and return content from files', () => {
+    expect.assertions(2);
+    const file = mockFs.readdirSync('fake/path/to/migrations');
+    const content = mockFs.readFileSync('fake_contents');
+    expect(file).toEqual(['001_fake_file.sql']);
+    expect(content).toBe('FAKE SQL CONTENT;');
   });
 
   it('should handle migration fail and throw error', async () => {
