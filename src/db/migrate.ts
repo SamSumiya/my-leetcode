@@ -6,7 +6,7 @@ import {
   readMigrationFile,
 } from './migrationHelps';
 
-async function main() {
+export async function main() {
   const migrateDirPath = getMigrationAbsPath();
   const files = getFilesFromMigrations(migrateDirPath);
 
@@ -17,12 +17,20 @@ async function main() {
   }
 }
 
-main()
-  .then(() => {
+export async function runMigrations() {
+  try {
+    await main();
     console.log('✅ All migrations applied successfully.');
     process.exit(0);
-  })
-  .catch((err) => {
+  } catch (err) {
+    if (err instanceof Error && err.message.startsWith('process.exit')) {
+      throw err;
+    }
     console.error('❌ Encountered an error during migration:', err);
     process.exit(1);
-  });
+  }
+}
+
+if (require.main === module) {
+  runMigrations();
+}
