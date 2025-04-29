@@ -1,6 +1,6 @@
 import { runMigrations } from '../../../src/db/migrate';
 import pool from '../../../src/db';
-import fs from 'fs';
+// TODO: refactor these tests cases to accomendate more files in the directory and add // tests/db/migrations/__mocks__/mockMigrations.ts
 
 jest.mock('../../../src/db', () => ({
   query: jest.fn(),
