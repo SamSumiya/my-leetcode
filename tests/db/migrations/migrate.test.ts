@@ -40,4 +40,11 @@ describe('Migration runner ', () => {
     const messageFromEnd = await pool.end();
     expect(messageFromEnd).toBe('Pool Closed!');
   });
+
+  it('should handle migration fail and throw error', async () => {
+    expect.assertions(2);
+    (pool.query as jest.Mock).mockRejectedValueOnce(new Error('failed migration'));
+    await expect(runMigrations()).rejects.toThrow('failed migration');
+    expect(pool.query).toHaveBeenCalledTimes(1);
+  });
 });

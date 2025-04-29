@@ -26,8 +26,14 @@ export async function runMigrations() {
     if (err instanceof Error && err.message.startsWith('process.exit')) {
       throw err;
     }
+
     console.error('❌ Encountered an error during migration:', err);
-    process.exit(1);
+
+    if (process.env.NODE_ENV !== 'test') {
+      process.exit(1);
+    } else {
+      throw err; // <-- during test, rethrow real error!
+    }
   }
 }
 
