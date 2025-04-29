@@ -7,7 +7,7 @@ import { buildLogEntry } from '../utils/buildLogEntry';
 // import { fileExists } from '../utils/fileExists';
 // import { readLogsFromLeetcode } from '../utils/readLogsFromLeetcode';
 import { appendLogToJsonlFile } from '../utils/appendLogToJsonlFile';
-
+import { writeLogToDB } from '../db/writeLogsToDB';
 // import type { LogEntry } from '../types';
 
 const LOG_PATH = path.resolve(__dirname, '../../leetcode-logs.jsonl');
@@ -21,7 +21,7 @@ async function main() {
     },
     {
       type: 'select',
-      name: 'dateOption',
+      name: 'date',
       message: 'Enter a date:',
       choices: [
         { title: '🗓️ Today', value: 'today' },
@@ -78,7 +78,7 @@ async function main() {
   // logs.push(entry);
 
   await appendLogToJsonlFile(LOG_PATH, entry);
-
+  await writeLogToDB(entry);
   console.log(`✅ Log for "${titleFromUrl}" saved successfully!`);
 }
 
