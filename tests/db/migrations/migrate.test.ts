@@ -4,7 +4,7 @@ import fs from 'fs';
 
 jest.mock('../../../src/db', () => ({
   query: jest.fn(),
-  end: jest.fn(),
+  end: jest.fn().mockResolvedValue('Pool Closed!'),
 }));
 
 jest.mock('fs', () => ({
@@ -29,12 +29,15 @@ describe('Migration runner ', () => {
     mockExit.mockRestore();
   });
 
-  it('main should return FAKE SQL CONTENT;', async () => {
-    expect.assertions(3);
+  it('should apply migrations successfully and close pool', async () => {
+    expect.assertions(4);
 
     await expect(runMigrations()).rejects.toThrow('process.exit: 0');
 
     expect(pool.query).toHaveBeenCalledWith('FAKE SQL CONTENT;');
     expect(pool.query).toHaveBeenCalledTimes(1);
+
+    const messageFromEnd = await pool.end();
+    expect(messageFromEnd).toBe('Pool Closed!');
   });
 });
