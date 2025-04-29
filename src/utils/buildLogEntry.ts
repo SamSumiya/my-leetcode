@@ -5,6 +5,6 @@ export function buildLogEntry(response: LogEntryInput): LogEntry {
   return {
     ...response,
     title: extractTitleFromUrl(response.url),
-    dateOption: response.dateOption,
+    date: response.date,
   };
 }
