@@ -2,6 +2,7 @@ import { runMigrations } from '../../../src/db/migrate';
 import pool from '../../../src/db';
 import fs from 'fs';
 // TODO: refactor these tests cases to accomendate more files in the directory and add // tests/db/migrations/__mocks__/mockMigrations.ts
+// TODO: add tests/__mocks__/createDefaultMock.ts
 
 jest.mock('../../../src/db', () => {
   const mockPool = {
@@ -37,6 +38,12 @@ describe('Migration runner ', () => {
 
   afterAll(() => {
     mockExit.mockRestore();
+  });
+
+  it('should throw an error if no files in migration', async () => {
+    mockFs.readdirSync.mockReturnValueOnce([]);
+    await expect(runMigrations()).rejects.toThrow('process.exit: 0');
+    expect(pool.query).not.toHaveBeenCalled();
   });
 
   it('should apply migrations successfully and close pool', async () => {

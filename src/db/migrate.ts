@@ -10,6 +10,11 @@ export async function main() {
   const migrateDirPath = getMigrationAbsPath();
   const files = getFilesFromMigrations(migrateDirPath);
 
+  if (files.length === 0) {
+    console.log('⚠️ No migration file');
+    process.exit(0);
+  }
+
   for (let file of files) {
     const filePath = getMigrationFileAbsPath(migrateDirPath, file);
     const content = readMigrationFile(filePath);
