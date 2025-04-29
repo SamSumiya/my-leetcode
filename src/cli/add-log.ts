@@ -12,7 +12,7 @@ interface LogEntry {
   tags?: string[];
   starred?: boolean;
   url?: string;
-  dateOption: 'today' | 'yesterday';
+  date: 'today' | 'yesterday';
 }
 
 async function main() {
@@ -24,7 +24,7 @@ async function main() {
     },
     {
       type: 'select',
-      name: 'dateOption',
+      name: 'date',
       message: 'Log date: ',
       choices: [
         { title: '🗓️ Today', value: 'today' },
@@ -78,7 +78,7 @@ async function main() {
 
   const now = new Date();
   const date = format(
-    response.dateOption === 'yesterday' ? new Date(now.setDate(now.getDate() - 1)) : now,
+    response.date === 'yesterday' ? new Date(now.setDate(now.getDate() - 1)) : now,
     'MM-dd-yyyy'
   );
   const tagsFormatted =
