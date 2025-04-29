@@ -18,7 +18,7 @@ describe('appendLogToJsonlFile', () => {
       approach: 'Brute force',
       tags: ['array'],
       starred: false,
-      dateOption: 'today',
+      date: 'today',
     };
     await appendLogToJsonlFile(fakePath, fakeData);
 

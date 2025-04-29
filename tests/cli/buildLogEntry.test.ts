@@ -31,7 +31,7 @@ describe('buildLogEntry', () => {
       approach: 'Hash map',
       tags: ['array', 'hashmap'],
       starred: false,
-      dateOption: 'today',
+      date: 'today',
     });
   });
 
@@ -44,7 +44,7 @@ describe('buildLogEntry', () => {
       approach: 'Hash map',
       tags: ['array', 'hashmap'],
       starred: false,
-      dateOption: 'today',
+      date: 'today',
     });
   });
 });
