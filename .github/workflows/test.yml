@@ -52,5 +52,8 @@ jobs:
             sleep 2
           done
 
+      - name: Run DB Migrations
+        run: npx ts-node src/db/migrate.ts
+
       - name: Run tests
         run: npm test
