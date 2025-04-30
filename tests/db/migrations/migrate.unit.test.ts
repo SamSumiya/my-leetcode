@@ -66,10 +66,22 @@ describe('Migration runner ', () => {
     expect(content).toBe('FAKE SQL CONTENT;');
   });
 
+  // it('should handle migration fail and throw error', async () => {
+  //   expect.assertions(2);
+  //   (pool.query as jest.Mock).mockRejectedValueOnce(new Error('failed migration'));
+  //   await expect(runMigrations()).rejects.toThrow('failed migration');
+  //   expect(pool.query).toHaveBeenCalledTimes(1);
+  // });
   it('should handle migration fail and throw error', async () => {
     expect.assertions(2);
+
+    const originalConsoleError = console.error;
+    console.error = jest.fn(); // suppress expected error log
+
     (pool.query as jest.Mock).mockRejectedValueOnce(new Error('failed migration'));
     await expect(runMigrations()).rejects.toThrow('failed migration');
     expect(pool.query).toHaveBeenCalledTimes(1);
+
+    console.error = originalConsoleError; // restore after test
   });
 });
