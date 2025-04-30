@@ -26,7 +26,10 @@ export async function writeLogToDB(entry: LogEntry) {
     console.log('✅ Log inserted into DB');
     return result;
   } catch (err) {
-    console.error('Encountered an err: ', err);
-    throw err;
+    if (process.env.NODE_ENV !== 'test') {
+      console.error('Encountered an err: ', err);
+    } else {
+      throw err;
+    }
   }
 }
