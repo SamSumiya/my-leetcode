@@ -1,6 +1,6 @@
 // Define the shap of a log entry
 export interface LogEntryInput {
-  date: 'today' | 'yesterday';
+  date: string;
   // title: string;
   url: string;
   difficulty: 'Easy' | 'Medium' | 'Hard';
