@@ -22,9 +22,11 @@ export async function writeLogToDB(entry: LogEntry) {
   ];
 
   try {
-    pool.query(query, values);
+    const result = await pool.query(query, values);
     console.log('✅ Log inserted into DB');
+    return result;
   } catch (err) {
     console.error('Encountered an err: ', err);
+    throw err;
   }
 }
