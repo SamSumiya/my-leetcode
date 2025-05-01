@@ -57,3 +57,9 @@ jobs:
 
       - name: Run tests
         run: npm test
+
+# TODO 🧪 Split unit vs integration test jobs for clarity/speed
+# TODO 📊 Add code coverage reporting (e.g. with jest --coverage + Codecov)
+# TODO 🧼 Auto-clean database between tests or use a test-setup.sql
+# TODO 📦 Cache dependencies (to speed up CI runs)
+# TODO 🔐 Use GitHub Secrets for production envs or private tokens
