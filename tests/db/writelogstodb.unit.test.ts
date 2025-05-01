@@ -1,5 +1,6 @@
+/* eslint-disable no-unused-vars */
 const mockPool = {
-  query: jest.fn().mockImplementation((sql: string, values: LogEntry[]) => {
+  query: jest.fn().mockImplementation((sql: string, _values: LogEntry[]) => {
     if (sql.includes('INSERT')) {
       return Promise.resolve({
         rows: [{ data: 'fake-data here...' }],

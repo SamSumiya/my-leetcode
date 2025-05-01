@@ -1,7 +1,6 @@
 import pool from '../../src/db/index';
 import { writeLogToDB } from '../../src/db/writeLogsToDB';
 import { LogEntry } from '../../src/types';
-import { format } from 'date-fns';
 
 describe('Integration Test: writeLogToDB', () => {
   let entryData: LogEntry;
