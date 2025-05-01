@@ -1,4 +1,3 @@
-import fs from 'fs';
 import path from 'path';
 import prompts from 'prompts';
 
@@ -20,15 +19,6 @@ async function main() {
       type: 'text',
       name: 'url',
       message: 'Leetcode URL:',
-    },
-    {
-      type: 'select',
-      name: 'date',
-      message: 'Enter a date:',
-      choices: [
-        { title: '🗓️ Today', value: 'today' },
-        { title: '🕰️ Yesterday', value: 'Yesterday' },
-      ],
     },
     {
       type: 'select',

@@ -9,7 +9,6 @@ describe('buildLogEntry', () => {
     approach: 'Hash map',
     tags: ['array', 'hashmap'],
     starred: false,
-    date: 'today',
   };
 
   const inputWithoutURL: LogEntryInput = {
@@ -19,7 +18,6 @@ describe('buildLogEntry', () => {
     approach: 'Hash map',
     tags: ['array', 'hashmap'],
     starred: false,
-    date: 'today',
   };
 
   it('Should return correct response object from input data', () => {
@@ -31,7 +29,6 @@ describe('buildLogEntry', () => {
       approach: 'Hash map',
       tags: ['array', 'hashmap'],
       starred: false,
-      date: 'today',
     });
   });
 
@@ -44,7 +41,6 @@ describe('buildLogEntry', () => {
       approach: 'Hash map',
       tags: ['array', 'hashmap'],
       starred: false,
-      date: 'today',
     });
   });
 });

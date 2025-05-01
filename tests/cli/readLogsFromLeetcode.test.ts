@@ -41,7 +41,6 @@ describe('readLogsFromLeetcode', () => {
       tags: ['array'],
       starred: true,
       url: 'https://leetcode.com/problems/test-problem/',
-      date: 'today',
     });
 
     (createReadStream as jest.Mock).mockReturnValue({});
@@ -58,7 +57,6 @@ describe('readLogsFromLeetcode', () => {
         tags: ['array'],
         starred: true,
         url: 'https://leetcode.com/problems/test-problem/',
-        date: 'today',
       },
     ]);
   });
@@ -99,7 +97,6 @@ describe('readLogsFromLeetcode', () => {
       tags: ['array'],
       starred: true,
       url: 'https://leetcode.com/problems/test-problem/',
-      date: 'today',
     });
     const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
 
@@ -119,7 +116,6 @@ describe('readLogsFromLeetcode', () => {
         tags: ['array'],
         starred: true,
         url: 'https://leetcode.com/problems/test-problem/',
-        date: 'today',
       },
     ]);
 
@@ -137,7 +133,6 @@ describe('readLogsFromLeetcode', () => {
         tags: [],
         starred: false,
         url: '',
-        date: 'today',
       },
       {
         title: 'P2',
@@ -147,7 +142,6 @@ describe('readLogsFromLeetcode', () => {
         tags: [],
         starred: false,
         url: '',
-        date: 'yesterday',
       },
     ];
 
@@ -166,7 +160,6 @@ describe('readLogsFromLeetcode', () => {
         tags: [],
         starred: false,
         url: '',
-        date: 'today',
       },
       {
         title: 'P2',
@@ -176,7 +169,6 @@ describe('readLogsFromLeetcode', () => {
         tags: [],
         starred: false,
         url: '',
-        date: 'yesterday',
       },
     ]);
   });
