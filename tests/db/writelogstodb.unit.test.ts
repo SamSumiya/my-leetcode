@@ -25,7 +25,7 @@ describe('writeLogToDB', () => {
 
   beforeEach(() => {
     newEntry = {
-      date: 'today',
+      // date: 'today',
       title: 'fake-title',
       url: 'fake-url',
       difficulty: 'Easy',
@@ -51,7 +51,7 @@ describe('writeLogToDB', () => {
     const [sql, values] = (pool.query as jest.Mock).mock.calls[0];
     expect(sql).toMatch('INSERT INTO logs');
     expect(values).toEqual([
-      newEntry.date,
+      // newEntry.date,
       newEntry.title,
       newEntry.url,
       newEntry.difficulty,
@@ -61,7 +61,7 @@ describe('writeLogToDB', () => {
       newEntry.starred,
     ]);
     expect(pool.query).toHaveBeenCalledWith(expect.stringContaining('INSERT INTO logs'), [
-      newEntry.date,
+      // newEntry.date,
       newEntry.title,
       newEntry.url,
       newEntry.difficulty,

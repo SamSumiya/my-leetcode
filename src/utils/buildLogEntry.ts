@@ -4,7 +4,6 @@ import type { LogEntry, LogEntryInput } from '../types';
 export function buildLogEntry(response: LogEntryInput): LogEntry {
   return {
     ...response,
-    title: extractTitleFromUrl(response.url),
-    date: response.date,
+    title: extractTitleFromUrl(response.url) || 'Unknown Title',
   };
 }

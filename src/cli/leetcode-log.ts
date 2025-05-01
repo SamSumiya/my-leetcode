@@ -23,15 +23,6 @@ async function main() {
     },
     {
       type: 'select',
-      name: 'date',
-      message: 'Enter a date:',
-      choices: [
-        { title: '🗓️ Today', value: 'today' },
-        { title: '🕰️ Yesterday', value: 'Yesterday' },
-      ],
-    },
-    {
-      type: 'select',
       name: 'difficulty',
       message: 'difficulty',
       choices: [

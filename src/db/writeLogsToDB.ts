@@ -6,12 +6,12 @@ import { LogEntry } from '../types';
 export async function writeLogToDB(entry: LogEntry) {
   const query = `
          INSERT INTO logs (
-            date, title, url, difficulty, status, approach, tags, starred )
-            VALUES( $1, $2, $3, $4, $5, $6, $7, $8)
+            title, url, difficulty, status, approach, tags, starred )
+            VALUES( $1, $2, $3, $4, $5, $6, $7)
         `;
 
   const values = [
-    entry.date,
+    // entry.date,
     entry.title,
     entry.url,
     entry.difficulty,

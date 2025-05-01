@@ -9,7 +9,10 @@
     "postinstall": "husky install",
     "log": "ts-node add-log.ts",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "migrate": "ts-node src/db/migrate.ts",
+    "app": "ts-node src/cli/leetcode-log.ts",
+    "all-tests": "npx jest tests/"
   },
   "repository": {
     "type": "git",
