@@ -1,5 +1,4 @@
 import fs from 'fs';
-import { format } from 'date-fns';
 import prompts from 'prompts';
 
 import { extractTitleFromUrl } from '../utils/extractTitleFromUrl';
@@ -12,7 +11,6 @@ interface LogEntry {
   tags?: string[];
   starred?: boolean;
   url?: string;
-  date: 'today' | 'yesterday';
 }
 
 async function main() {
@@ -21,15 +19,6 @@ async function main() {
       type: 'text',
       name: 'url',
       message: 'Leetcode URL: ',
-    },
-    {
-      type: 'select',
-      name: 'date',
-      message: 'Log date: ',
-      choices: [
-        { title: '🗓️ Today', value: 'today' },
-        { title: '🕰️ Yesterday', value: 'yesterday' },
-      ],
     },
     {
       type: 'select',
@@ -76,11 +65,11 @@ async function main() {
     return;
   }
 
-  const now = new Date();
-  const date = format(
-    response.date === 'yesterday' ? new Date(now.setDate(now.getDate() - 1)) : now,
-    'MM-dd-yyyy'
-  );
+  // const now = new Date();
+  // const date = format(
+  //   response.date === 'yesterday' ? new Date(now.setDate(now.getDate() - 1)) : now,
+  //   'MM-dd-yyyy'
+  // );
   const tagsFormatted =
     response.tags
       ?.map((tag) => tag.trim())
@@ -89,8 +78,8 @@ async function main() {
 
   const starSymbol = response.starred ? '🌟' : '';
   const parsedTitle = extractTitleFromUrl(response.url || '');
-  const titleWithLink = response.url ? `${parsedTitle} [🔗](${response.url})` : parsedTitle;
-  response.title = parsedTitle;
+  // const titleWithLink = response.url ? `${parsedTitle} [🔗](${response.url})` : parsedTitle;
+  // response.title = parsedTitle;
   function pad(str: string, length: number): string {
     return str.length > length ? str.slice(0, length - 3) + '...' : str.padEnd(length, ' ');
   }
@@ -105,7 +94,7 @@ async function main() {
   const status = response.status;
   const approach = response.approach.trim();
 
-  const logLine = `| ${pad(date, 12)} |  ${paddedTitle} | ${pad(difficulty, 10)} | ${pad(status, 9)} | ${pad(approach, 30)} | ${pad(tagsFormatted, 25)} | ${pad(starSymbol, 3)} |`;
+  const logLine = `${paddedTitle} | ${pad(difficulty, 10)} | ${pad(status, 9)} | ${pad(approach, 30)} | ${pad(tagsFormatted, 25)} | ${pad(starSymbol, 3)} |`;
   fs.appendFileSync('logs.md', '\n' + logLine + '\n');
   console.log(`✅ Log entry saved to logs.md`);
 }
