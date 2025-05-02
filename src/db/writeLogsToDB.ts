@@ -11,7 +11,6 @@ export async function writeLogToDB(entry: LogEntry) {
         `;
 
   const values = [
-    // entry.date,
     entry.title,
     entry.url,
     entry.difficulty,
