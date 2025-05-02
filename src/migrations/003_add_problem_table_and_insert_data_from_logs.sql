@@ -6,8 +6,16 @@ CREATE TABLE IF NOT EXISTS problems (
     url TEXT not null 
 ); 
 
-
-ALTER TABLE logs ADD COLUMN slug TEXT;
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM information_schema.columns 
+    WHERE table_name='logs' AND column_name='slug'
+  ) THEN
+    ALTER TABLE logs ADD COLUMN slug TEXT;
+  END IF;
+END;
+$$;
 
 UPDATE logs
 SET slug = LOWER(REPLACE(title, ' ', '-'))
@@ -22,4 +30,5 @@ SELECT DISTINCT
     tags, 
     url
 FROM logs 
-    WHERE title is NOT NULL; 
+WHERE title is NOT NULL AND slug IS NOT NULL 
+ON CONFLICT (slug) DO NOTHING;
