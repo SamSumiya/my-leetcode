@@ -3,11 +3,8 @@ import prompts from 'prompts';
 
 import { extractTitleFromUrl } from '../utils/extractTitleFromUrl';
 import { buildLogEntry } from '../utils/buildLogEntry';
-// import { fileExists } from '../utils/fileExists';
-// import { readLogsFromLeetcode } from '../utils/readLogsFromLeetcode';
 import { appendLogToJsonlFile } from '../utils/appendLogToJsonlFile';
 import { writeLogToDB } from '../db/writeLogsToDB';
-// import type { LogEntry } from '../types';
 
 // TODO: add a default of user's choice and flexibity of changing it as they wish
 

@@ -2,23 +2,17 @@ import { buildLogEntry } from '../../src/utils/buildLogEntry';
 import type { LogEntryMeta } from '../../src/types';
 
 describe('buildLogEntry', () => {
-  const input: LogEntryMeta = {
-    // url: 'https://leetcode.com/problems/two-sum',
-    // difficulty: 'Easy',
-    slug: 'two-sum',
-    status: '✅ Pass',
-    approach: 'Hash map',
-    // tags: ['array', 'hashmap'],
-    starred: false,
-  };
+  // const input: LogEntryMeta = {
+  //   slug: 'two-sum',
+  //   status: '✅ Pass',
+  //   approach: 'Hash map',
+  //   starred: false,
+  // };
 
   const inputWithoutURL: LogEntryMeta = {
-    // url: '',
-    // difficulty: 'Easy',
     slug: 'two-sum',
     status: '✅ Pass',
     approach: 'Hash map',
-    // tags: ['array', 'hashmap'],
     starred: false,
   };
 
@@ -38,11 +32,8 @@ describe('buildLogEntry', () => {
   it('Should be Unknown Title if user did not provide an url', () => {
     expect(buildLogEntry(inputWithoutURL)).toEqual({
       slug: 'unknown-slug',
-      // url: '',
-      // difficulty: 'Easy',
       status: '✅ Pass',
       approach: 'Hash map',
-      // tags: ['array', 'hashmap'],
       starred: false,
     });
   });

@@ -7,21 +7,15 @@ describe('Integration Test: writeLogToDB', () => {
   beforeAll(() => {
     entryData = {
       slug: 'fake-leetcode',
-      // url: 'https://leetcode.com/problems/fake-leetcode/description/?envType=study-plan-v2&envId=leetcode-75',
-      // difficulty: 'Easy',
       status: '✅ Pass',
       approach: 'fake-approach',
-      // tags: ['tag-A', 'tag-B'],
       starred: false,
     };
   });
 
   // TODO[refactor] extract this to a helperFunction deleteTestLog
   afterEach(async () => {
-    const response = await pool.query(`DELETE FROM logs where slug = $1`, [
-      entryData.slug,
-      // entryData.url,
-    ]);
+    const response = await pool.query(`DELETE FROM logs where slug = $1`, [entryData.slug]);
     if (!expect.getState().currentTestName?.includes('throw an error')) {
       expect(response.rowCount).toBe(1);
     }
@@ -41,12 +35,9 @@ describe('Integration Test: writeLogToDB', () => {
     const row = response.rows[0];
 
     expect(row.slug).toEqual(entryData.slug);
-    // expect(row.url).toEqual(entryData.url);
-    // expect(row.difficulty).toEqual(entryData.difficulty);
     expect(row.status).toEqual(entryData.status);
     expect(row.approach).toEqual(entryData.approach);
     expect(row.starred).toEqual(entryData.starred);
-    // expect(row.tags).toEqual(expect.arrayContaining(entryData.tags));
     expect(new Date(row.date).toISOString()).toMatch(/\d{4}-\d{2}-\d{2}T/);
   });
 

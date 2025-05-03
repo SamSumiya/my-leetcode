@@ -91,12 +91,9 @@ describe('readLogsFromLeetcode', () => {
     const badLine = '{this is a bad line}';
     const validLogLines = JSON.stringify({
       slug: 'test-problem',
-      // difficulty: 'Easy',
       status: '✅ Pass',
       approach: 'two-pointer',
-      // tags: ['array'],
       starred: true,
-      // url: 'https://leetcode.com/problems/test-problem/',
     });
     const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
 
@@ -110,12 +107,9 @@ describe('readLogsFromLeetcode', () => {
     expect(logs).toEqual([
       {
         slug: 'test-problem',
-        // difficulty: 'Easy',
         status: '✅ Pass',
         approach: 'two-pointer',
-        // tags: ['array'],
         starred: true,
-        // url: 'https://leetcode.com/problems/test-problem/',
       },
     ]);
 
@@ -127,21 +121,15 @@ describe('readLogsFromLeetcode', () => {
     const entries = [
       {
         slug: 'p-1',
-        // difficulty: 'Easy',
         status: '✅ Pass',
         approach: '',
-        // tags: [],
         starred: false,
-        // url: '',
       },
       {
         slug: 'p-2',
-        // difficulty: 'Hard',
         status: '💥 Fail',
         approach: '',
-        // tags: [],
         starred: false,
-        // url: '',
       },
     ];
 
@@ -154,21 +142,15 @@ describe('readLogsFromLeetcode', () => {
     expect(logs).toEqual([
       {
         slug: 'p-1',
-        // difficulty: 'Easy',
         status: '✅ Pass',
         approach: '',
-        // tags: [],
         starred: false,
-        // url: '',
       },
       {
         slug: 'p-2',
-        // difficulty: 'Hard',
         status: '💥 Fail',
         approach: '',
-        // tags: [],
         starred: false,
-        // url: '',
       },
     ]);
   });

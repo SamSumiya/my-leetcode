@@ -12,11 +12,8 @@ describe('appendLogToJsonlFile', () => {
     const fakePath = '';
     const fakeData: LogEntryMeta = {
       slug: 'fake-slug',
-      // url: 'https://leetcode.com/problems/fake',
-      // difficulty: 'Easy',
       status: '✅ Pass',
       approach: 'Brute force',
-      // tags: ['array'],
       starred: false,
     };
     await appendLogToJsonlFile(fakePath, fakeData);

@@ -10,9 +10,6 @@ jest.mock('pg', () => {
 
   const mockPool = {
     connect: jest.fn().mockResolvedValue(mockClient),
-    // query: jest.fn().mockResolvedValue({
-    //   rows: [{ time: 'fake-time' }],
-    // }),
     end: jest.fn(),
   };
 
