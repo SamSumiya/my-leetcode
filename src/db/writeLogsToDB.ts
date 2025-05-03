@@ -9,15 +9,7 @@ export async function writeLogToDB(entry: LogEntryMeta) {
             VALUES( $1, $2, $3, $4)
         `;
 
-  const values = [
-    entry.slug,
-    // entry.url,
-    // entry.difficulty,
-    entry.status,
-    entry.approach,
-    // entry.tags,
-    entry.starred,
-  ];
+  const values = [entry.slug, entry.status, entry.approach, entry.starred];
 
   try {
     const result = await pool.query(query, values);

@@ -1,10 +1,8 @@
 // Define the shap of a log entry
 export interface LogEntryMeta {
   slug: string;
-  // difficulty: 'Easy' | 'Medium' | 'Hard';
   status: '✅ Pass' | '💥 Fail' | '⚠️ Attempted';
   approach: string;
-  // tags: string[];
   starred: boolean;
 }
 

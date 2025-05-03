@@ -1,4 +1,3 @@
-// import { writeFile } from 'fs/promises';
 import { appendFile } from 'fs/promises';
 import type { LogEntryMeta } from '../types';
 
