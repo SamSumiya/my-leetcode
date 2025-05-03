@@ -34,13 +34,13 @@ function mockAsyncIterator(lines: string[]) {
 describe('readLogsFromLeetcode', () => {
   it('Should read valid logs line and returns parsed array', async () => {
     const validLogLines = JSON.stringify({
-      title: 'Test Problem',
-      difficulty: 'Easy',
+      slug: 'test-problem',
+      // difficulty: 'Easy',
       status: '✅ Pass',
       approach: 'two-pointer',
-      tags: ['array'],
+      // tags: ['array'],
       starred: true,
-      url: 'https://leetcode.com/problems/test-problem/',
+      // url: 'https://leetcode.com/problems/test-problem/',
     });
 
     (createReadStream as jest.Mock).mockReturnValue({});
@@ -50,13 +50,13 @@ describe('readLogsFromLeetcode', () => {
 
     expect(logs).toEqual([
       {
-        title: 'Test Problem',
-        difficulty: 'Easy',
+        slug: 'test-problem',
+        // difficulty: 'Easy',
         status: '✅ Pass',
         approach: 'two-pointer',
-        tags: ['array'],
+        // tags: ['array'],
         starred: true,
-        url: 'https://leetcode.com/problems/test-problem/',
+        // url: 'https://leetcode.com/problems/test-problem/',
       },
     ]);
   });
@@ -90,13 +90,13 @@ describe('readLogsFromLeetcode', () => {
   it('Should skip malformed lines', async () => {
     const badLine = '{this is a bad line}';
     const validLogLines = JSON.stringify({
-      title: 'Test Problem',
-      difficulty: 'Easy',
+      slug: 'test-problem',
+      // difficulty: 'Easy',
       status: '✅ Pass',
       approach: 'two-pointer',
-      tags: ['array'],
+      // tags: ['array'],
       starred: true,
-      url: 'https://leetcode.com/problems/test-problem/',
+      // url: 'https://leetcode.com/problems/test-problem/',
     });
     const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
 
@@ -109,13 +109,13 @@ describe('readLogsFromLeetcode', () => {
 
     expect(logs).toEqual([
       {
-        title: 'Test Problem',
-        difficulty: 'Easy',
+        slug: 'test-problem',
+        // difficulty: 'Easy',
         status: '✅ Pass',
         approach: 'two-pointer',
-        tags: ['array'],
+        // tags: ['array'],
         starred: true,
-        url: 'https://leetcode.com/problems/test-problem/',
+        // url: 'https://leetcode.com/problems/test-problem/',
       },
     ]);
 
@@ -126,22 +126,22 @@ describe('readLogsFromLeetcode', () => {
   it('Should parse multiple valid log lines', async () => {
     const entries = [
       {
-        title: 'P1',
-        difficulty: 'Easy',
+        slug: 'p-1',
+        // difficulty: 'Easy',
         status: '✅ Pass',
         approach: '',
-        tags: [],
+        // tags: [],
         starred: false,
-        url: '',
+        // url: '',
       },
       {
-        title: 'P2',
-        difficulty: 'Hard',
+        slug: 'p-2',
+        // difficulty: 'Hard',
         status: '💥 Fail',
         approach: '',
-        tags: [],
+        // tags: [],
         starred: false,
-        url: '',
+        // url: '',
       },
     ];
 
@@ -153,22 +153,22 @@ describe('readLogsFromLeetcode', () => {
     const logs = await readLogsFromLeetcode('path/fake');
     expect(logs).toEqual([
       {
-        title: 'P1',
-        difficulty: 'Easy',
+        slug: 'p-1',
+        // difficulty: 'Easy',
         status: '✅ Pass',
         approach: '',
-        tags: [],
+        // tags: [],
         starred: false,
-        url: '',
+        // url: '',
       },
       {
-        title: 'P2',
-        difficulty: 'Hard',
+        slug: 'p-2',
+        // difficulty: 'Hard',
         status: '💥 Fail',
         approach: '',
-        tags: [],
+        // tags: [],
         starred: false,
-        url: '',
+        // url: '',
       },
     ]);
   });

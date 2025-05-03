@@ -1,9 +1,9 @@
-import { extractTitleFromUrl } from './extractTitleFromUrl';
-import type { LogEntry, LogEntryInput } from '../types';
+import { extractSlugFromUrl } from './extractSlugFromUrl';
+import type { LogEntryMeta } from '../types';
 
-export function buildLogEntry(response: LogEntryInput): LogEntry {
+export function buildLogEntry(response: LogEntryMeta): LogEntryMeta {
   return {
     ...response,
-    title: extractTitleFromUrl(response.url) || 'Unknown Title',
+    slug: extractSlugFromUrl(response.slug) || 'unknown-slug',
   };
 }

@@ -1,23 +1,21 @@
 import pool from './index';
-import { LogEntry } from '../types';
-
+import { LogEntryMeta } from '../types';
 // TODO: add reusable runQuery.ts;
 
-export async function writeLogToDB(entry: LogEntry) {
+export async function writeLogToDB(entry: LogEntryMeta) {
   const query = `
          INSERT INTO logs (
-            title, url, difficulty, status, approach, tags, starred )
-            VALUES( $1, $2, $3, $4, $5, $6, $7)
+            slug, status, approach, starred )
+            VALUES( $1, $2, $3, $4)
         `;
 
   const values = [
-    // entry.date,
-    entry.title,
-    entry.url,
-    entry.difficulty,
+    entry.slug,
+    // entry.url,
+    // entry.difficulty,
     entry.status,
     entry.approach,
-    entry.tags,
+    // entry.tags,
     entry.starred,
   ];
 

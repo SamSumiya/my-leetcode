@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 const mockPool = {
-  query: jest.fn().mockImplementation((sql: string, _values: LogEntry[]) => {
+  query: jest.fn().mockImplementation((sql: string, _values: LogEntryMeta[]) => {
     if (sql.includes('INSERT')) {
       return Promise.resolve({
         rows: [{ data: 'fake-data here...' }],
@@ -20,19 +20,19 @@ jest.mock('../../src/db/index', () => {
 
 import pool from '../../src/db/index';
 import { writeLogToDB } from '../../src/db/writeLogsToDB';
-import { LogEntry } from '../../src/types';
+import { LogEntryMeta } from '../../src/types';
 describe('writeLogToDB', () => {
-  let newEntry: LogEntry;
+  let newEntry: LogEntryMeta;
 
   beforeEach(() => {
     newEntry = {
       // date: 'today',
-      title: 'fake-title',
-      url: 'fake-url',
-      difficulty: 'Easy',
+      slug: 'fake-title',
+      // url: 'fake-url',
+      // difficulty: 'Easy',
       status: '✅ Pass',
       approach: 'fake-approach',
-      tags: ['fake-tag'],
+      // tags: ['fake-tag'],
       starred: false,
     };
   });
@@ -53,22 +53,22 @@ describe('writeLogToDB', () => {
     expect(sql).toMatch('INSERT INTO logs');
     expect(values).toEqual([
       // newEntry.date,
-      newEntry.title,
-      newEntry.url,
-      newEntry.difficulty,
+      newEntry.slug,
+      // newEntry.url,
+      // newEntry.difficulty,
       newEntry.status,
       newEntry.approach,
-      newEntry.tags,
+      // newEntry.tags,
       newEntry.starred,
     ]);
     expect(pool.query).toHaveBeenCalledWith(expect.stringContaining('INSERT INTO logs'), [
       // newEntry.date,
-      newEntry.title,
-      newEntry.url,
-      newEntry.difficulty,
+      newEntry.slug,
+      // newEntry.url,
+      // newEntry.difficulty,
       newEntry.status,
       newEntry.approach,
-      newEntry.tags,
+      // newEntry.tags,
       newEntry.starred,
     ]);
     expect(pool.query).toHaveBeenCalledTimes(1);

@@ -1,7 +1,7 @@
 import { appendLogToJsonlFile } from '../../src/utils/appendLogToJsonlFile';
 import { appendFile } from 'fs/promises';
 
-import type { LogEntry } from '../../src/types';
+import type { LogEntryMeta } from '../../src/types';
 
 jest.mock('fs/promises', () => ({
   appendFile: jest.fn(),
@@ -10,13 +10,13 @@ jest.mock('fs/promises', () => ({
 describe('appendLogToJsonlFile', () => {
   it('should call appendFile with correct path and log data', async () => {
     const fakePath = '';
-    const fakeData: LogEntry = {
-      title: 'Fake Title',
-      url: 'https://leetcode.com/problems/fake',
-      difficulty: 'Easy',
+    const fakeData: LogEntryMeta = {
+      slug: 'fake-slug',
+      // url: 'https://leetcode.com/problems/fake',
+      // difficulty: 'Easy',
       status: '✅ Pass',
       approach: 'Brute force',
-      tags: ['array'],
+      // tags: ['array'],
       starred: false,
     };
     await appendLogToJsonlFile(fakePath, fakeData);
