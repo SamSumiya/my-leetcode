@@ -5,7 +5,7 @@ import { extractTitleFromUrl } from '../utils/extractTitleFromUrl';
 import { buildLogEntry } from '../utils/buildLogEntry';
 import { appendLogToJsonlFile } from '../utils/appendLogToJsonlFile';
 import { writeLogToDB } from '../db/writeLogsToDB';
-
+import { isProblemLogged } from '../utils/isProblemLogged';
 // TODO: add a default of user's choice and flexibity of changing it as they wish
 
 const LOG_PATH = path.resolve(__dirname, '../../leetcode-logs.jsonl');
