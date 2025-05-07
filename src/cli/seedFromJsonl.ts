@@ -1,59 +1,108 @@
+// 1. Built-in Node.js modules
 import fs from 'fs';
-import path from 'path';
 import readline from 'readline';
-import pool from '../db/index';
+import path from 'path';
+
+// 2. Third-party modules
+import pool from '../db';
+
+// 3. Internal modules (aliases or relative paths)
 import { ProblemMeta } from '../types';
+import { extractSlugFromUrl } from '../utils/extractSlugFromUrl';
+import { parseFlags } from '../utils/parseFlags';
 
-async function purgeDB() {
-  await pool.query('DELETE FROM problems');
-}
-
-async function insertToDB(p: ProblemMeta) {
-  await pool.query(
-    `INSERT INTO problems (url, title, slug, difficulty, tags)
-     VALUES ($1,$2,$3,$4,$5)
-     ON CONFLICT (slug) DO NOTHING`,
-    [p.url, p.title, p.slug, p.difficulty, p.tags]
+async function insertIntoDB(entry: ProblemMeta) {
+  return await pool.query(
+    `
+  INSERT INTO problems (slug, title, difficulty, tags, url)
+  VALUES($1,$2,$3,$4,$5)
+  ON CONFLICT (slug) DO NOTHING
+  `,
+    [entry.slug, entry.title, entry.difficulty, entry.tags, entry.url]
   );
 }
 
-const makeSlug = (t: string) =>
-  t
-    .toLowerCase()
-    .replace(/[^\w\s-]/g, '')
-    .trim()
-    .replace(/\s+/g, '-');
+async function deleteDataFromProblemTable() {
+  await pool.query(`DELETE FROM problems`);
+}
+
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 async function main() {
-  const absPath = path.join(__dirname, '../../leetcode-logs.jsonl');
-  if (!fs.existsSync(absPath)) throw new Error(`file not found: ${absPath}`);
+  let newRows = 0;
+  let skipped = 0;
+  let inserted = new Set();
+  const args = process.argv.slice(2);
+  const flags = parseFlags(args);
+  const batchSize = flags.limit ?? Infinity;
+  const absPath = path.resolve(flags.file);
 
-  const {
-    rows: [{ count }],
-  } = await pool.query('SELECT COUNT(*) FROM problems');
-  if (+count) await purgeDB();
+  if (flags.noDelete) {
+    console.log('🍀 Previous DB data was not delete');
+  } else {
+    await deleteDataFromProblemTable();
+  }
 
   const rl = readline.createInterface({
-    input: fs.createReadStream(absPath, { encoding: 'utf8' }),
+    input: fs.createReadStream(absPath, { encoding: 'utf-8' }),
     crlfDelay: Infinity,
   });
 
+  let processed = 0;
   for await (const line of rl) {
-    if (!line.trim()) continue; // skip blank lines
-    const raw = JSON.parse(line) as ProblemMeta;
-    await insertToDB({ ...raw, slug: makeSlug(raw.title) });
+    if (!line.trim()) {
+      skipped++;
+      continue;
+    }
+
+    try {
+      const parsedLine = JSON.parse(line);
+      const slug = extractSlugFromUrl(parsedLine.url);
+      const validEntry = {
+        ...parsedLine,
+        slug: slug,
+      };
+
+      if (inserted.has(validEntry.slug)) {
+        skipped++;
+        continue;
+      }
+
+      if (flags.dryRun) {
+        console.log(`[Dry Run] Would insert: ${slug}`);
+      } else {
+        const response = await insertIntoDB(validEntry);
+        newRows += response.rowCount ?? 0;
+      }
+
+      inserted.add(validEntry.slug);
+      processed++;
+
+      if (processed % batchSize === 0 && flags.delay > 0) {
+        console.log(`⏸️ Pausing for ${flags.delay}ms after ${processed} rows...`);
+        await sleep(flags.delay);
+      }
+    } catch (err) {
+      console.error('❌ JSON parse error on the following line:\n');
+      console.error(line);
+      console.error('\n📍 Error message:', (err as Error).message);
+    }
   }
 
   rl.close();
-
-  const {
-    rows: [{ count: final }],
-  } = await pool.query('SELECT COUNT(*) FROM problems');
-  console.log(`✅ inserted ${final} rows`);
-  await pool.end(); // release connections
+  console.log(`📄 Using file: ${absPath}`);
+  if (skipped > 0) {
+    console.log(`⚠️ Skipped ${skipped} duplicates or invalid or blank line(s)`);
+  }
+  console.log(`🪵 Logged ${newRows} new row${newRows < 1 ? '' : 's'}`);
+  await pool.end();
 }
 
-main().catch((e) => {
-  console.error('❌ script failed:', e);
-  process.exit(1);
-});
+main()
+  .then(() => process.exit(0))
+  .catch((err) => {
+    console.error(err);
+    process.exit(1);
+  });

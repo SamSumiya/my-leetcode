@@ -4,4 +4,5 @@ leetcode-log.json/
 
 
 .env/ 
-.envsrc/cli/seedFromJsonl.ts
+.env
+src/cli/seedFromJsonl.ts
