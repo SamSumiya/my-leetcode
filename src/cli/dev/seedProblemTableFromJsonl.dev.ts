@@ -10,6 +10,7 @@ import pool from '../../db';
 import { ProblemMeta } from '../../types';
 import { extractSlugFromUrl } from '../../utils/extractSlugFromUrl';
 import { parseFlags } from '../../utils/parseFlags';
+import { resolveFilePath } from '../../utils/resolveFilePath';
 
 async function insertIntoDB(entry: ProblemMeta) {
   return await pool.query(
@@ -37,7 +38,8 @@ async function main() {
   const args = process.argv.slice(2);
   const flags = parseFlags(args);
   const batchSize = flags.limit ?? Infinity;
-  const absPath = path.resolve(flags.file);
+  const absPath = resolveFilePath(flags.file);
+  // const absPath = path.resolve(process.cwd(), flags.file);
 
   if (flags.noDelete) {
     console.log('🍀 Previous DB data was not delete');
