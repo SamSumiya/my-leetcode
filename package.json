@@ -12,7 +12,9 @@
     "test:watch": "jest --watch",
     "migrate": "ts-node src/db/migrate.ts",
     "app": "ts-node src/cli/leetcode-log.ts",
-    "all-tests": "npx jest tests/"
+    "all-tests": "npx jest tests/",
+    "prepare": "husky install",
+    "typecheck": "tsc --noEmit --skipLibCheck"
   },
   "repository": {
     "type": "git",
@@ -45,7 +47,7 @@
     "typescript-eslint": "^8.30.1"
   },
   "lint-staged": {
-    "*.js": [
+    "*.{js,ts,tsx}": [
       "eslint --fix",
       "prettier --write"
     ]

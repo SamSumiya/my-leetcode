@@ -50,4 +50,11 @@
 {"slug": "valid-parentheses", "title": "Valid Parentheses", "difficulty": "Easy", "tags": [], "url": "https://leetcode.com/problems/valid-parentheses/"}
 {"slug": "valid-palindrome", "title": "Valid Palindrome", "difficulty": "Easy", "} 
 
- 
+{"slug": "search-in-rotated-sorted-array", "title": "Search in Rotated Sorted Array", "difficulty": "Medium", "tags": [], "url": "https://leetcode.com/problems/search-in-rotated-sorted-array/"}
+{"slug": "3sum", "title": "3Sum", "difficulty": "Medium", "tags": [], "url": "https://leetcode.com/problems/3sum/"}
+{"slug": "container-with-most-water", "title": "Container With Most Water", "difficulty": "Medium", "tags": [], "url": "https://leetcode.com/problems/container-with-most-water/"}
+{"slug": "sum-of-two-integers", "title": "Sum of Two Integers", "difficulty": "Medium", "tags": [], "url": "https://leetcode.com/problems/sum-of-two-integers/"}
+{"slug": "number-of-1-bits", "title": "Number of 1 Bits", "difficulty": "Easy", "tags": [], "url": "https://leetcode.com/problems/number-of-1-bits/"}
+{"slug": "counting-bits", "title": "Counting Bits", "difficulty": "Easy", "tags": [], "url": "https://leetcode.com/problems/counting-bits/"}
+{"slug": "missing-number", "title": "Missing Number", "difficulty": "Easy", "tags": [], "url": "https://leetcode.com/problems/missing-number/"}
+{"slug": "reverse-bits", "title": "Reverse Bits", "difficulty": "Easy", "tags": [], "url": "https://leetcode.com/problems/reverse-bits/"}

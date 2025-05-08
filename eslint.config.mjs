@@ -28,7 +28,8 @@ export default defineConfig([
     rules: {
       ...tseslint.configs.recommended.rules,
       'prettier/prettier': 'error',
-      'no-unused-vars': 'warn',
+      // 'no-unused-vars': 'warn',
+      '@typescript-eslint/no-unused-vars': 'warn',
     },
   },
   prettierConfig,
