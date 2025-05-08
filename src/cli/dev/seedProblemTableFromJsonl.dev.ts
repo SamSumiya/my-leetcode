@@ -4,12 +4,12 @@ import readline from 'readline';
 import path from 'path';
 
 // 2. Third-party modules
-import pool from '../db';
+import pool from '../../db';
 
 // 3. Internal modules (aliases or relative paths)
-import { ProblemMeta } from '../types';
-import { extractSlugFromUrl } from '../utils/extractSlugFromUrl';
-import { parseFlags } from '../utils/parseFlags';
+import { ProblemMeta } from '../../types';
+import { extractSlugFromUrl } from '../../utils/extractSlugFromUrl';
+import { parseFlags } from '../../utils/parseFlags';
 
 async function insertIntoDB(entry: ProblemMeta) {
   return await pool.query(
