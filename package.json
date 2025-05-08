@@ -13,7 +13,8 @@
     "migrate": "ts-node src/db/migrate.ts",
     "app": "ts-node src/cli/leetcode-log.ts",
     "all-tests": "npx jest tests/",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "typecheck": "tsc --noEmit --skipLibCheck"
   },
   "repository": {
     "type": "git",
