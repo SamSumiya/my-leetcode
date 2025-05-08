@@ -16,3 +16,5 @@ export interface ProblemMeta {
   tags: string[];
   url: string;
 }
+
+export type CombinedLogAndProblemMeta = Omit<LogEntryMeta, 'slug'> & Omit<ProblemMeta, 'slug'>;

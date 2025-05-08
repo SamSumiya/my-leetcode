@@ -1,16 +1,15 @@
 // 1. Built-in Node.js modules
 import fs from 'fs';
 import readline from 'readline';
-import path from 'path';
 
 // 2. Third-party modules
 import pool from '../../db';
 
 // 3. Internal modules (aliases or relative paths)
 import { ProblemMeta } from '../../types';
-import { extractSlugFromUrl } from '../../utils/extractSlugFromUrl';
 import { parseFlags } from '../../utils/parseFlags';
 import { resolveFilePath } from '../../utils/resolveFilePath';
+import { sanitizeProblemEntries } from '../../utils/sanitize';
 
 async function insertIntoDB(entry: ProblemMeta) {
   return await pool.query(
@@ -33,13 +32,13 @@ function sleep(ms: number) {
 
 async function main() {
   let newRows = 0;
-  let skipped = 0;
+  let skippedInvalidLineCount = 0;
+  let skippedDuplicateLineCount = 0;
   let inserted = new Set();
   const args = process.argv.slice(2);
   const flags = parseFlags(args);
   const batchSize = flags.limit ?? Infinity;
   const absPath = resolveFilePath(flags.file);
-  // const absPath = path.resolve(process.cwd(), flags.file);
 
   if (flags.noDelete) {
     console.log('🍀 Previous DB data was not delete');
@@ -55,31 +54,32 @@ async function main() {
   let processed = 0;
   for await (const line of rl) {
     if (!line.trim()) {
-      skipped++;
+      skippedInvalidLineCount++;
       continue;
     }
 
     try {
       const parsedLine = JSON.parse(line);
-      const slug = extractSlugFromUrl(parsedLine.url);
-      const validEntry = {
-        ...parsedLine,
-        slug: slug,
-      };
+      const sanitizedProblemEntry = sanitizeProblemEntries(parsedLine);
 
-      if (inserted.has(validEntry.slug)) {
-        skipped++;
+      if (!sanitizedProblemEntry) {
+        skippedInvalidLineCount++;
+        continue;
+      }
+
+      if (inserted.has(sanitizedProblemEntry.slug)) {
+        skippedDuplicateLineCount++;
         continue;
       }
 
       if (flags.dryRun) {
-        console.log(`[Dry Run] Would insert: ${slug}`);
+        console.log(`[Dry Run] Would insert: ${sanitizedProblemEntry.slug}`);
       } else {
-        const response = await insertIntoDB(validEntry);
+        const response = await insertIntoDB(sanitizedProblemEntry);
         newRows += response.rowCount ?? 0;
       }
 
-      inserted.add(validEntry.slug);
+      inserted.add(sanitizedProblemEntry.slug);
       processed++;
 
       if (processed % batchSize === 0 && flags.delay > 0) {
@@ -95,8 +95,15 @@ async function main() {
 
   rl.close();
   console.log(`📄 Using file: ${absPath}`);
-  if (skipped > 0) {
-    console.log(`⚠️ Skipped ${skipped} duplicates or invalid or blank line(s)`);
+  if (skippedInvalidLineCount > 0) {
+    console.log(
+      `⚠️ Skipped ${skippedInvalidLineCount} invalid ${skippedInvalidLineCount > 1 ? 'entries' : 'entry'}`
+    );
+  }
+  if (skippedDuplicateLineCount > 0) {
+    console.log(
+      `⚠️ Skipped ${skippedDuplicateLineCount} duplicate ${skippedDuplicateLineCount > 1 ? 'entries' : 'entry'}`
+    );
   }
   console.log(`🪵 Logged ${newRows} new row${newRows < 1 ? '' : 's'}`);
   await pool.end();
