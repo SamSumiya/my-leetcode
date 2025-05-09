@@ -1,4 +1,4 @@
-import { ProblemMeta, CombinedLogAndProblemMeta } from '../types';
+import { ProblemMeta, CombinedLogAndProblemMeta, LogEntryMeta } from '../types';
 import { extractSlugFromUrl } from './extractSlugFromUrl';
 
 export function sanitizeProblemEntries(entry: CombinedLogAndProblemMeta): ProblemMeta | null {
@@ -28,7 +28,8 @@ export function sanitizeProblemEntries(entry: CombinedLogAndProblemMeta): Proble
       url: entry.url.trim(),
     };
   } catch (err) {
-    console.warn('Skipping invalid entry:', (err as Error).message);
+    if (err instanceof Error) console.warn(`Skipping invalid entry:', ${err as Error}.message`);
+    else console.warn(`Skipping invalid entry:', ${err}`);
     return null;
   }
 }

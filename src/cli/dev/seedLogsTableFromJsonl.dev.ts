@@ -6,8 +6,6 @@ import { LogEntryMeta } from '../../types';
 import { resolveFilePath } from '../../utils/resolveFilePath';
 import { parseFlags } from '../../utils/parseFlags';
 
-function filterDataForLog() {}
-
 async function main() {
   const args = process.argv.slice(0);
   const filePath = parseFlags(args);
