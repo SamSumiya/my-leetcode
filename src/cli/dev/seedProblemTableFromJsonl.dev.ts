@@ -9,7 +9,7 @@ import pool from '../../db';
 import { ProblemMeta } from '../../types';
 import { parseFlags } from '../../utils/parseFlags';
 import { resolveFilePath } from '../../utils/resolveFilePath';
-import { sanitizeProblemEntries } from '../../utils/sanitize';
+import { sanitizeProblemEntries } from '../../utils/sanitize/sanitizeProblem';
 
 async function insertIntoDB(entry: ProblemMeta) {
   return await pool.query(

@@ -1,7 +1,7 @@
 import readline from 'readline';
 import fs from 'fs';
 
-import { LogEntryMeta } from '../../types';
+// import { LogEntryMeta } from '../../types';
 
 import { resolveFilePath } from '../../utils/resolveFilePath';
 import { parseFlags } from '../../utils/parseFlags';
