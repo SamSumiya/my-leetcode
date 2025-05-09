@@ -4,6 +4,7 @@ export type CLIFlags = {
   dryRun: boolean;
   file: string;
   noDelete: boolean;
+  dedupe: boolean;
 };
 
 export function parseFlags(args: string[]): CLIFlags {
@@ -20,6 +21,7 @@ export function parseFlags(args: string[]): CLIFlags {
   const rawFile = getValue('--file') || '../../leetcode-logs.jsonl';
   const file = rawFile && !rawFile.startsWith('--') ? rawFile : '../../leetcode-logs.jsonl';
   const noDelete = args.includes('--no-delete');
+  const dedupe = args.includes('--dedupe');
 
   return {
     delay,
@@ -27,5 +29,6 @@ export function parseFlags(args: string[]): CLIFlags {
     dryRun,
     file,
     noDelete,
+    dedupe,
   };
 }
