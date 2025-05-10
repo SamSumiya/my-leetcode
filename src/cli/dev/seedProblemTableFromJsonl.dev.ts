@@ -40,6 +40,11 @@ async function main() {
   const batchSize = flags.limit ?? Infinity;
   const absPath = resolveFilePath(flags.file);
 
+  if (flags.invalidInput.length > 0) {
+    console.log(`❌ Invalid CLI input: ${flags.invalidInput.join(', ')}`);
+    return;
+  }
+
   if (flags.noDelete) {
     console.log('🍀 Previous DB data was not delete');
   } else {
