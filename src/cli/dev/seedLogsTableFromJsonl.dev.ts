@@ -3,8 +3,6 @@ import fs from 'fs';
 
 import pool from '../../db';
 
-import { LogEntryMeta } from '../../types';
-
 import { resolveFilePath } from '../../utils/resolveFilePath';
 import { parseFlags } from '../../utils/parseFlags';
 import { sanitizeLogs } from '../../utils/sanitize/sanitizeLog';

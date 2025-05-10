@@ -1,5 +1,5 @@
 import pool from '.';
-import { LogEntryMeta } from '../../types';
+import { LogEntryMeta } from '../types';
 
 export const deleteDuplicateToSeconds = () =>
   pool.query(`
