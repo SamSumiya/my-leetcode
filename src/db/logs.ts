@@ -18,6 +18,11 @@ export const deleteDuplicateToSeconds = () =>
     );
   `);
 
+export const deletLogsTable = async () => {
+  const result = await pool.query(`DELETE FROM logs`);
+  return result.rowCount;
+};
+
 export const insertIntoLogs = async (logData: LogEntryMeta): Promise<void> => {
   pool.query(
     `

@@ -6,13 +6,27 @@ import pool from '../../db';
 import { resolveFilePath } from '../../utils/resolveFilePath';
 import { parseFlags } from '../../utils/parseFlags';
 import { sanitizeLogs } from '../../utils/sanitize/sanitizeLog';
-import { deleteDuplicateToSeconds, insertIntoLogs } from '../../db/logs';
+import { deleteDuplicateToSeconds, insertIntoLogs, deletLogsTable } from '../../db/logs';
 
 async function main() {
   let invalidLogCount = 0;
   const args = process.argv.slice(2);
   const flags = parseFlags(args);
   const path = resolveFilePath(flags.file);
+  const noDelete = flags.noDelete;
+
+  if (flags.invalidInput.length > 0) {
+    console.log(`❌ Invalid CLI input: ${flags.invalidInput.join(', ')}`);
+    return;
+  }
+
+  if (noDelete) {
+    console.log(`🍀 No previous logs table was deleted
+    `);
+  } else {
+    const deletedCount = await deletLogsTable();
+    console.log(`🚛 Delete ${deletedCount} rows from row table`);
+  }
 
   const rl = readline.createInterface({
     input: fs.createReadStream(path, { encoding: 'utf-8' }),
@@ -45,11 +59,8 @@ async function main() {
   }
 
   rl.close();
-  console.log(`
-    📄 Using file: ${path}`);
-  console.log(`
-    ⚠️ Skipped ${invalidLogCount} invalid ${invalidLogCount > 1 ? 'entries' : 'entry'}
-    `);
+  console.log(`📄 Using file: ${path}`);
+  console.log(`⚠️ Skipped ${invalidLogCount} invalid ${invalidLogCount > 1 ? 'entries' : 'entry'}`);
   await pool.end();
 }
 

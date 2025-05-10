@@ -5,7 +5,10 @@ export type CLIFlags = {
   file: string;
   noDelete: boolean;
   dedupe: boolean;
+  invalidInput: string[];
 };
+
+const validFlags = new Set(['--dry-run', '--delay', '--file', '--no-delete', '--dedupe']);
 
 export function parseFlags(args: string[]): CLIFlags {
   const getValue = (key: string) => {
@@ -14,7 +17,7 @@ export function parseFlags(args: string[]): CLIFlags {
   };
 
   const dryRun = args.includes('--dry-run');
-  const rawLimit = getValue('--limit');
+  const rawLimit = getValue('c');
   const limit = rawLimit && /^\d+$/.test(rawLimit) ? parseInt(rawLimit, 10) : undefined;
   const rawDelay = getValue('--delay');
   const delay = rawDelay && /^\d+$/.test(rawDelay) ? parseInt(rawDelay, 10) : 0;
@@ -22,6 +25,9 @@ export function parseFlags(args: string[]): CLIFlags {
   const file = rawFile && !rawFile.startsWith('--') ? rawFile : '../../leetcode-logs.jsonl';
   const noDelete = args.includes('--no-delete');
   const dedupe = args.includes('--dedupe');
+  const invalidInput = args
+    .filter((arg) => arg.startsWith('--'))
+    .filter((arg) => !validFlags.has(arg));
 
   return {
     delay,
@@ -30,5 +36,6 @@ export function parseFlags(args: string[]): CLIFlags {
     file,
     noDelete,
     dedupe,
+    invalidInput,
   };
 }
