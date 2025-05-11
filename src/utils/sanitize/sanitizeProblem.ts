@@ -1,8 +1,9 @@
-import { ProblemMeta, CombinedLogAndProblemMeta } from '../types';
-import { extractSlugFromUrl } from './extractSlugFromUrl';
+import { ProblemMeta, CombinedLogAndProblemMeta } from '../../types';
+import { extractSlugFromUrl } from '../extractSlugFromUrl';
+import { withSanitization } from './withSanitization';
 
 export function sanitizeProblemEntries(entry: CombinedLogAndProblemMeta): ProblemMeta | null {
-  try {
+  const validate = () => {
     if (typeof entry.title !== 'string' || !entry.title.trim()) {
       throw new Error(`Invalid title: ${entry.title}`);
     }
@@ -27,8 +28,6 @@ export function sanitizeProblemEntries(entry: CombinedLogAndProblemMeta): Proble
       tags: entry.tags,
       url: entry.url.trim(),
     };
-  } catch (err) {
-    console.warn('Skipping invalid entry:', (err as Error).message);
-    return null;
-  }
+  };
+  return withSanitization(validate, 'Problem Sanitizer');
 }

@@ -9,18 +9,8 @@ import pool from '../../db';
 import { ProblemMeta } from '../../types';
 import { parseFlags } from '../../utils/parseFlags';
 import { resolveFilePath } from '../../utils/resolveFilePath';
-import { sanitizeProblemEntries } from '../../utils/sanitize';
-
-async function insertIntoDB(entry: ProblemMeta) {
-  return await pool.query(
-    `
-  INSERT INTO problems (slug, title, difficulty, tags, url)
-  VALUES($1,$2,$3,$4,$5)
-  ON CONFLICT (slug) DO NOTHING
-  `,
-    [entry.slug, entry.title, entry.difficulty, entry.tags, entry.url]
-  );
-}
+import { sanitizeProblemEntries } from '../../utils/sanitize/sanitizeProblem';
+import { insertIntoProblemTable } from '../../db/problems';
 
 async function deleteDataFromProblemTable() {
   await pool.query(`DELETE FROM problems`);
@@ -39,6 +29,12 @@ async function main() {
   const flags = parseFlags(args);
   const batchSize = flags.limit ?? Infinity;
   const absPath = resolveFilePath(flags.file);
+  // const tableName = flags.table;
+
+  if (flags.invalidInput.length > 0) {
+    console.log(`❌ Invalid CLI input: ${flags.invalidInput.join(', ')}`);
+    return;
+  }
 
   if (flags.noDelete) {
     console.log('🍀 Previous DB data was not delete');
@@ -75,7 +71,7 @@ async function main() {
       if (flags.dryRun) {
         console.log(`[Dry Run] Would insert: ${sanitizedProblemEntry.slug}`);
       } else {
-        const response = await insertIntoDB(sanitizedProblemEntry);
+        const response = await insertIntoProblemTable(sanitizedProblemEntry);
         newRows += response.rowCount ?? 0;
       }
 
@@ -102,10 +98,10 @@ async function main() {
   }
   if (skippedDuplicateLineCount > 0) {
     console.log(
-      `⚠️ Skipped ${skippedDuplicateLineCount} duplicate ${skippedDuplicateLineCount > 1 ? 'entries' : 'entry'}`
+      `⚠️  Skipped ${skippedDuplicateLineCount} duplicate ${skippedDuplicateLineCount > 1 ? 'entries' : 'entry'}`
     );
   }
-  console.log(`🪵 Logged ${newRows} new row${newRows < 1 ? '' : 's'}`);
+  console.log(`🪵  Logged ${newRows} new row${newRows < 1 ? '' : 's'}`);
   await pool.end();
 }
 
