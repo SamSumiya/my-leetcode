@@ -1,21 +1,14 @@
-export type CLIFlags = {
-  limit?: number;
-  delay: number;
-  dryRun: boolean;
-  file: string;
-  noDelete: boolean;
-  dedupe: boolean;
-  invalidInput: string[];
-  deleteTable?: string;
-};
+import { CLIFlags } from './flagType';
 
 const validFlags: Set<string> = new Set([
   '--dry-run',
+  '--no-delete',
+  '--delete',
+  '--seed',
+  '--table',
   '--delay',
   '--file',
-  '--no-delete',
   '--dedupe',
-  '--delete-table',
   '--limit',
 ] as const);
 
@@ -25,17 +18,27 @@ export function parseFlags(args: string[]): CLIFlags {
     return i !== -1 && args[i + 1] ? args[i + 1] : null;
   };
 
-  const dryRun = args.includes('--dry-run');
+  // Need to get value from the second input after CLI command
   const rawLimit = getValue('--limit');
   const limit = rawLimit && /^\d+$/.test(rawLimit) ? parseInt(rawLimit, 10) : undefined;
+
   const rawDelay = getValue('--delay');
   const delay = rawDelay && /^\d+$/.test(rawDelay) ? parseInt(rawDelay, 10) : 0;
+
   const rawFile = getValue('--file') || '../../leetcode-logs.jsonl';
   const file = rawFile && !rawFile.startsWith('--') ? rawFile : '../../leetcode-logs.jsonl';
+
+  // Only Checking if args has CLI command or not
+  const dryRun = args.includes('--dry-run');
   const noDelete = args.includes('--no-delete');
   const dedupe = args.includes('--dedupe');
-  const rawTable = getValue('--delete-table');
-  const deleteTable = rawTable && rawTable.startsWith('--delete-table') ? rawTable : undefined;
+
+  const shouldDelete = args.includes('--delete');
+  const shouldSeed = args.includes('--seed');
+  const rawTable = getValue('--table');
+  const table = rawTable && !rawTable.startsWith('--') ? rawTable : undefined;
+
+  // Need modification
   const invalidInput = args
     .filter((arg) => arg.startsWith('--'))
     .filter((arg) => !validFlags.has(arg as string));
@@ -48,6 +51,8 @@ export function parseFlags(args: string[]): CLIFlags {
     noDelete,
     dedupe,
     invalidInput,
-    deleteTable,
+    seed: shouldSeed,
+    delete: shouldDelete,
+    table,
   };
 }
