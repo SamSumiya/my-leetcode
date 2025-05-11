@@ -15,7 +15,7 @@ async function main() {
   const flags = parseFlags(args);
   const path = resolveFilePath(flags.file);
   const noDelete = flags.noDelete;
-  const tableName = flags.deleteTable;
+  // const tableName = flags.deleteTable;
 
   if (flags.invalidInput.length > 0) {
     console.log(`❌ Invalid CLI input: ${flags.invalidInput.join(', ')}`);
@@ -26,10 +26,10 @@ async function main() {
     console.log(`🍀 No previous logs table was deleted
     `);
   } else {
-    if (tableName) {
-      const deletedCount = await DeleteAllFromTable(tableName);
-      console.log(`🚛 Delete ${deletedCount} rows from table`);
-    }
+    // if (tableName) {
+    // const deletedCount = await DeleteAllFromTable(tableName);
+    // console.log(`🚛 Delete ${deletedCount} rows from table`);
+    // }
   }
 
   const rl = readline.createInterface({

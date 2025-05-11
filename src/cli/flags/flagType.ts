@@ -8,4 +8,5 @@ export type CLIFlags = {
   invalidInput: string[];
   seed?: boolean;
   delete?: boolean;
+  table?: string;
 };

@@ -5,6 +5,7 @@ const validFlags: Set<string> = new Set([
   '--no-delete',
   '--delete',
   '--seed',
+  '--table',
   '--delay',
   '--file',
   '--dedupe',
@@ -31,8 +32,11 @@ export function parseFlags(args: string[]): CLIFlags {
   const dryRun = args.includes('--dry-run');
   const noDelete = args.includes('--no-delete');
   const dedupe = args.includes('--dedupe');
+
   const shouldDelete = args.includes('--delete');
   const shouldSeed = args.includes('--seed');
+  const rawTable = getValue('--table');
+  const table = rawTable && !rawTable.startsWith('--') ? rawTable : undefined;
 
   // Need modification
   const invalidInput = args
@@ -49,5 +53,6 @@ export function parseFlags(args: string[]): CLIFlags {
     invalidInput,
     seed: shouldSeed,
     delete: shouldDelete,
+    table,
   };
 }
