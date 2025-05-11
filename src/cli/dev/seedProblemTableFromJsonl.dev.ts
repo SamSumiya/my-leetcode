@@ -7,7 +7,7 @@ import pool from '../../db';
 
 // 3. Internal modules (aliases or relative paths)
 import { ProblemMeta } from '../../types';
-import { parseFlags } from '../../utils/parseFlags';
+import { parseFlags } from '../flags/parseFlags';
 import { resolveFilePath } from '../../utils/resolveFilePath';
 import { sanitizeProblemEntries } from '../../utils/sanitize/sanitizeProblem';
 import { insertIntoProblemTable } from '../../db/problems';

@@ -4,7 +4,7 @@ import fs from 'fs';
 import pool from '../../db';
 
 import { resolveFilePath } from '../../utils/resolveFilePath';
-import { parseFlags } from '../../utils/parseFlags';
+import { parseFlags } from '../flags/parseFlags';
 import { sanitizeLogs } from '../../utils/sanitize/sanitizeLog';
 import { deleteDuplicateToSeconds, insertIntoLogs } from '../../db/logs';
 import { DeleteAllFromTable } from '../../db/utils/dbUtils';
