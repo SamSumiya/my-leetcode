@@ -6,7 +6,8 @@ import pool from '../../db';
 import { resolveFilePath } from '../../utils/resolveFilePath';
 import { parseFlags } from '../../utils/parseFlags';
 import { sanitizeLogs } from '../../utils/sanitize/sanitizeLog';
-import { deleteDuplicateToSeconds, insertIntoLogs, deletLogsTable } from '../../db/logs';
+import { deleteDuplicateToSeconds, insertIntoLogs } from '../../db/logs';
+import { DeleteAllFromTable } from '../../db/utils/dbUtils';
 
 async function main() {
   let invalidLogCount = 0;
@@ -14,6 +15,7 @@ async function main() {
   const flags = parseFlags(args);
   const path = resolveFilePath(flags.file);
   const noDelete = flags.noDelete;
+  const tableName = flags.deleteTable;
 
   if (flags.invalidInput.length > 0) {
     console.log(`❌ Invalid CLI input: ${flags.invalidInput.join(', ')}`);
@@ -24,8 +26,10 @@ async function main() {
     console.log(`🍀 No previous logs table was deleted
     `);
   } else {
-    const deletedCount = await deletLogsTable();
-    console.log(`🚛 Delete ${deletedCount} rows from row table`);
+    if (tableName) {
+      const deletedCount = await DeleteAllFromTable(tableName);
+      console.log(`🚛 Delete ${deletedCount} rows from table`);
+    }
   }
 
   const rl = readline.createInterface({
