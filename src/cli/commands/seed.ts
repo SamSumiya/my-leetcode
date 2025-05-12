@@ -1,5 +1,8 @@
 import { parseFlags } from '../flags/parseFlags';
 
+// Validate entries
+import { isLogEntry } from '../../utils/validator/isLogEntry';
+
 import { createLineReader } from '../../utils/io/createLineReader';
 import { sanitizeLogs } from '../../utils/sanitize/sanitizeLog';
 import { insertIntoLogs } from '../../db/logs';
@@ -25,12 +28,21 @@ export async function seed() {
       const parsedLine = JSON.parse(line);
 
       if (tableName === 'logs') {
-        const entry = sanitizeLogs(parsedLine);
-        if (!entry) {
+        if (!isLogEntry(parsedLine)) {
+          console.warn(`⚠️ Invalid raw log entry. Skipping line: ${parsedLine}`);
           invalidCount++;
           continue;
         }
-        await insertIntoLogs(entry);
+
+        const entry = sanitizeLogs(parsedLine);
+
+        if (entry) {
+          await insertIntoLogs(entry);
+        } else {
+          console.warn(`⚠️ Failed to sanitize log entry. Skipping line: ${line}`);
+          invalidCount++;
+          continue;
+        }
       } else if (tableName === 'problems') {
         const entry = sanitizeProblemEntries(parsedLine);
         if (!entry) {
@@ -45,5 +57,5 @@ export async function seed() {
     }
   }
 
-  //   console.log(invalidCount);
+  console.log(invalidCount);
 }
